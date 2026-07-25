@@ -2506,9 +2506,15 @@ function deleteFuel(id) {
     // Update tampilan
     render();
 }
+// ========================================
+// FUEL PRINT PREVIEW
+// ========================================
+
+let currentPrintFuel = null;
+
 
 // ========================================
-// PRINT FUEL
+// OPEN FUEL PRINT PREVIEW
 // ========================================
 
 function printFuel(id) {
@@ -2529,10 +2535,146 @@ function printFuel(id) {
     }
 
 
+    currentPrintFuel = item;
+
+
+    // Harga per liter
     const pricePerLiter =
         item.liter > 0
             ? item.cost / item.liter
             : 0;
+
+
+    // ====================================
+    // BASIC DATA
+    // ====================================
+
+    document.getElementById(
+        "fuelPrintDate"
+    ).textContent =
+        formatDate(item.date);
+
+
+    document.getElementById(
+        "fuelPrintKm"
+    ).textContent =
+        formatNumber(item.km) +
+        " KM";
+
+
+    document.getElementById(
+        "fuelPrintVehicle"
+    ).textContent =
+        vehicle.name;
+
+
+    document.getElementById(
+        "fuelPrintType"
+    ).textContent =
+        item.type;
+
+
+    document.getElementById(
+        "fuelPrintPrice"
+    ).textContent =
+        formatRupiah(
+            Math.round(
+                pricePerLiter
+            )
+        );
+
+
+    document.getElementById(
+        "fuelPrintLiter"
+    ).textContent =
+        item.liter.toFixed(2) +
+        " L";
+
+
+    document.getElementById(
+        "fuelPrintCost"
+    ).textContent =
+        formatRupiah(
+            item.cost
+        );
+
+
+    // ====================================
+    // FOOTER
+    // ====================================
+
+    document.getElementById(
+        "fuelPrintFooter"
+    ).textContent =
+        "INGFO BENGKEL · " +
+        formatDate(
+            item.date
+        ).toUpperCase();
+
+
+    // ====================================
+    // SHOW PREVIEW
+    // ====================================
+
+    document.getElementById(
+        "fuelPrintPreview"
+    ).classList.add(
+        "show"
+    );
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+// ========================================
+// CLOSE FUEL PRINT PREVIEW
+// ========================================
+
+function closeFuelPrintPreview() {
+
+    document.getElementById(
+        "fuelPrintPreview"
+    ).classList.remove(
+        "show"
+    );
+
+
+    document.body.style.overflow =
+        "";
+
+
+    currentPrintFuel =
+        null;
+}
+
+
+// ========================================
+// PRINT CURRENT FUEL
+// ========================================
+
+function printCurrentFuel() {
+
+    if (!currentPrintFuel) {
+        return;
+    }
+
+
+    const receipt =
+        document.getElementById(
+            "fuelReceipt"
+        );
+
+
+    if (!receipt) {
+
+        alert(
+            "Fuel receipt tidak ditemukan."
+        );
+
+        return;
+    }
 
 
     const printWindow =
@@ -2559,7 +2701,9 @@ function printFuel(id) {
 
         <head>
 
-            <title>Fuel Log - Ingfo Bengkel</title>
+            <title>
+                Fuel Log - Ingfo Bengkel
+            </title>
 
             <style>
 
@@ -2574,82 +2718,99 @@ function printFuel(id) {
 
                 body {
                     margin: 0;
+
                     font-family:
                         "Courier New",
                         monospace;
+
                     color: #111;
                 }
 
-                .receipt {
+                .service-receipt {
                     width: 100%;
+                    color: #111;
+                }
+
+                .receipt-content {
                     padding: 20px;
                 }
 
-                .header {
+                .receipt-header {
                     text-align: center;
                     margin-bottom: 30px;
                 }
 
-                .header h1 {
+                .receipt-header h1 {
                     margin: 0;
+
                     font-size: 21px;
                     letter-spacing: 5px;
                 }
 
-                .header p {
+                .receipt-header p {
                     margin-top: 8px;
+
                     font-size: 8px;
                     letter-spacing: 3px;
                 }
 
-                .line {
+                .receipt-line {
                     border-top:
                         1px dashed #888;
 
                     margin: 22px 0;
                 }
 
-                .row {
+                .receipt-row,
+                .receipt-detail,
+                .receipt-total {
+
                     display: flex;
-                    justify-content: space-between;
+
+                    justify-content:
+                        space-between;
+
                     gap: 20px;
 
-                    margin-bottom: 12px;
+                    margin-bottom: 10px;
 
                     font-size: 9px;
                 }
 
-                .row strong {
+                .receipt-row strong,
+                .receipt-detail strong {
+
                     text-align: right;
+
+                    max-width: 65%;
                 }
 
-                .fuel-name {
-                    font-size: 14px;
-                    font-weight: bold;
-                    text-transform: uppercase;
+                .receipt-service h2 {
 
-                    margin-bottom: 20px;
+                    font-size: 12px;
+
+                    margin:
+                        0 0 22px;
+
+                    text-transform:
+                        uppercase;
                 }
 
-                .total {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-
-                    font-size: 10px;
+                .receipt-total strong {
+                    font-size: 12px;
                 }
 
-                .total strong {
-                    font-size: 14px;
-                }
-
-                .footer {
-                    margin-top: 30px;
+                .receipt-footer {
 
                     text-align: center;
 
+                    margin-top: 14px;
+
                     font-size: 7px;
-                    letter-spacing: 2px;
+                }
+
+                .receipt-tear {
+                    display: none;
                 }
 
             </style>
@@ -2659,125 +2820,7 @@ function printFuel(id) {
 
         <body>
 
-            <div class="receipt">
-
-                <div class="header">
-
-                    <h1>
-                        INGFO BENGKEL
-                    </h1>
-
-                    <p>
-                        FUEL LOG
-                    </p>
-
-                </div>
-
-
-                <div class="line"></div>
-
-
-                <div class="row">
-
-                    <span>
-                        DATE
-                    </span>
-
-                    <strong>
-                        ${formatDate(item.date)}
-                    </strong>
-
-                </div>
-
-
-                <div class="row">
-
-                    <span>
-                        VEHICLE
-                    </span>
-
-                    <strong>
-                        ${escapeHTML(vehicle.name)}
-                    </strong>
-
-                </div>
-
-
-                <div class="row">
-
-                    <span>
-                        ODOMETER
-                    </span>
-
-                    <strong>
-                        ${formatNumber(item.km)} KM
-                    </strong>
-
-                </div>
-
-
-                <div class="line"></div>
-
-
-                <div class="fuel-name">
-                    ${escapeHTML(item.type)}
-                </div>
-
-
-                <div class="row">
-
-                    <span>
-                        PRICE / LITER
-                    </span>
-
-                    <strong>
-                        ${formatRupiah(
-                            Math.round(
-                                pricePerLiter
-                            )
-                        )}
-                    </strong>
-
-                </div>
-
-
-                <div class="row">
-
-                    <span>
-                        LITER
-                    </span>
-
-                    <strong>
-                        ${item.liter.toFixed(2)} L
-                    </strong>
-
-                </div>
-
-
-                <div class="line"></div>
-
-
-                <div class="total">
-
-                    <span>
-                        TOTAL
-                    </span>
-
-                    <strong>
-                        ${formatRupiah(item.cost)}
-                    </strong>
-
-                </div>
-
-
-                <div class="footer">
-
-                    INGFO BENGKEL ·
-                    ${formatDate(item.date).toUpperCase()}
-
-                </div>
-
-            </div>
+            ${receipt.outerHTML}
 
 
             <script>
@@ -2798,6 +2841,212 @@ function printFuel(id) {
 
 
     printWindow.document.close();
+}
+
+
+// ========================================
+// SAVE FUEL IMAGE
+// ========================================
+
+async function saveFuelImage() {
+
+    if (!currentPrintFuel) {
+        return;
+    }
+
+
+    const receipt =
+        document.getElementById(
+            "fuelReceipt"
+        );
+
+
+    if (!receipt) {
+
+        alert(
+            "Fuel receipt tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        const canvas =
+            await html2canvas(
+                receipt,
+                {
+                    scale: 3,
+
+                    backgroundColor:
+                        "#ffffff",
+
+                    useCORS: true
+                }
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.download =
+            `ingfo-bengkel-fuel-${currentPrintFuel.date}.png`;
+
+
+        link.href =
+            canvas.toDataURL(
+                "image/png"
+            );
+
+
+        link.click();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal menyimpan Fuel Log:",
+            error
+        );
+
+
+        alert(
+            "Gagal menyimpan gambar."
+        );
+
+    }
+}
+
+
+// ========================================
+// SHARE FUEL
+// ========================================
+
+function shareFuel() {
+
+    if (!currentPrintFuel) {
+        return;
+    }
+
+
+    const pricePerLiter =
+        currentPrintFuel.liter > 0
+            ? currentPrintFuel.cost /
+              currentPrintFuel.liter
+            : 0;
+
+
+    const text =
+        "INGFO BENGKEL\n" +
+        "FUEL LOG\n\n" +
+
+        vehicle.name +
+        "\n" +
+
+        formatDate(
+            currentPrintFuel.date
+        ) +
+        "\n" +
+
+        formatNumber(
+            currentPrintFuel.km
+        ) +
+        " KM\n\n" +
+
+        currentPrintFuel.type +
+        "\n" +
+
+        "Harga/Liter: " +
+        formatRupiah(
+            Math.round(
+                pricePerLiter
+            )
+        ) +
+        "\n" +
+
+        "Liter: " +
+        currentPrintFuel.liter.toFixed(2) +
+        " L\n" +
+
+        "Total: " +
+        formatRupiah(
+            currentPrintFuel.cost
+        );
+
+
+    // Web Share API
+    if (navigator.share) {
+
+        navigator.share({
+
+            title:
+                "Fuel Log",
+
+            text:
+                text
+
+        }).catch(error => {
+
+            // User menutup share sheet
+            if (
+                error.name !==
+                "AbortError"
+            ) {
+
+                console.error(
+                    "Share Fuel gagal:",
+                    error
+                );
+
+            }
+
+        });
+
+
+        return;
+    }
+
+
+    // ====================================
+    // FALLBACK COPY
+    // ====================================
+
+    if (
+        navigator.clipboard &&
+        navigator.clipboard.writeText
+    ) {
+
+        navigator.clipboard
+            .writeText(text)
+            .then(() => {
+
+                alert(
+                    "Fuel Log disalin."
+                );
+
+            })
+            .catch(() => {
+
+                alert(
+                    "Share tidak didukung browser ini."
+                );
+
+            });
+
+    }
+
+    else {
+
+        alert(
+            "Share tidak didukung browser ini."
+        );
+
+    }
 }
 
 
