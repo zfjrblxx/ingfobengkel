@@ -397,26 +397,51 @@ function saveVehicle() {
             .trim();
 
 
-    // Nama kendaraan
+    // ====================================
+    // VALIDASI
+    // ====================================
+
     if (name.length > 50) {
-        alert("Nama kendaraan maksimal 50 karakter.");
+
+        alert(
+            "Nama kendaraan maksimal 50 karakter."
+        );
+
         return;
     }
 
 
-    // Plat nomor
     if (plate.length > 20) {
-        alert("Plat nomor maksimal 20 karakter.");
+
+        alert(
+            "Plat nomor maksimal 20 karakter."
+        );
+
         return;
     }
 
 
-    // Tahun
     if (year.length > 10) {
-        alert("Tahun kendaraan tidak valid.");
+
+        alert(
+            "Tahun kendaraan tidak valid."
+        );
+
         return;
     }
 
+
+    // ====================================
+    // BACKUP DATA LAMA
+    // ====================================
+
+    const oldVehicle =
+        { ...vehicle };
+
+
+    // ====================================
+    // UPDATE DATA
+    // ====================================
 
     vehicle.name =
         name || "My Motorcycle";
@@ -428,11 +453,25 @@ function saveVehicle() {
         year || "-";
 
 
-if (!saveData()) {
-    return;
-}
+    // ====================================
+    // SIMPAN
+    // ====================================
 
-render();
+    if (!saveData()) {
+
+        // Rollback ke data sebelumnya
+        vehicle =
+            oldVehicle;
+
+        return;
+    }
+
+
+    // ====================================
+    // BERHASIL
+    // ====================================
+
+    render();
 
     closeModal("vehicleModal");
 }
@@ -459,8 +498,14 @@ function saveOdometer() {
         ).value.trim();
 
 
+    // ====================================
+    // VALIDASI
+    // ====================================
+
     if (input === "") {
+
         alert("Masukkan kilometer.");
+
         return;
     }
 
@@ -475,21 +520,49 @@ function saveOdometer() {
         km > 9999999
     ) {
 
-        alert("Masukkan kilometer yang valid.");
+        alert(
+            "Masukkan kilometer yang valid."
+        );
 
         return;
     }
 
 
+    // ====================================
+    // BACKUP DATA LAMA
+    // ====================================
+
+    const oldOdometer =
+        vehicle.odometer;
+
+
+    // ====================================
+    // UPDATE DATA
+    // ====================================
+
     vehicle.odometer =
         Math.round(km);
 
 
-if (!saveData()) {
-    return;
-}
+    // ====================================
+    // SIMPAN
+    // ====================================
 
-render();
+    if (!saveData()) {
+
+        // Rollback
+        vehicle.odometer =
+            oldOdometer;
+
+        return;
+    }
+
+
+    // ====================================
+    // BERHASIL
+    // ====================================
+
+    render();
 
     closeModal("odometerModal");
 }
