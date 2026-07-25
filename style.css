@@ -571,3 +571,10 @@ button {
     align-items: center;
     gap: 7px;
 }
+
+.tax-prepare {
+    display: block;
+    margin-top: 4px;
+    font-size: 11px;
+    color: #999;
+}
