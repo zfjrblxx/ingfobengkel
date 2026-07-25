@@ -429,6 +429,144 @@
 </nav>
 
 
+<!-- =========================
+     SERVICE PRINT PREVIEW
+========================= -->
+
+<div class="print-preview" id="printPreview">
+
+    <div class="print-wrapper">
+
+        <div class="service-receipt" id="serviceReceipt">
+
+            <div class="receipt-tear top"></div>
+
+            <div class="receipt-content">
+
+                <div class="receipt-header">
+                    <h1>INGFO BENGKEL</h1>
+                    <p>RIWAYAT SERVICE</p>
+                </div>
+
+                <div class="receipt-line"></div>
+
+                <div class="receipt-row">
+                    <span>DATE</span>
+                    <strong id="printDate">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>ODOMETER</span>
+                    <strong id="printKm">-</strong>
+                </div>
+
+                <div class="receipt-row">
+                    <span>VEHICLE</span>
+                    <strong id="printVehicle">-</strong>
+                </div>
+
+                <div class="receipt-line"></div>
+
+
+                <div class="receipt-service">
+
+                    <h2 id="printServiceName">-</h2>
+
+                    <div class="receipt-detail" id="printPartWrap">
+                        <span>SPARE PART</span>
+                        <strong id="printPart"></strong>
+                    </div>
+
+                    <div class="receipt-detail" id="printWorkshopWrap">
+                        <span>WORKSHOP</span>
+                        <strong id="printWorkshop"></strong>
+                    </div>
+
+                    <div class="receipt-detail" id="printNotesWrap">
+                        <span>NOTES</span>
+                        <strong id="printNotes"></strong>
+                    </div>
+
+                </div>
+
+
+                <div class="receipt-total">
+
+                    <span>TOTAL</span>
+
+                    <strong id="printCost">
+                        Rp0
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <div class="receipt-next">
+
+                    <span>NEXT SERVICE</span>
+
+                    <strong id="printNextService">
+                        -
+                    </strong>
+
+                    <small>
+                        SERVICE RUTIN SETIAP 3 BULAN
+                    </small>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <div class="receipt-end">
+                    END OF RECORD
+                </div>
+
+
+                <div class="receipt-footer" id="printFooter">
+                    INGFO BENGKEL
+                </div>
+
+            </div>
+
+            <div class="receipt-tear bottom"></div>
+
+        </div>
+
+
+        <!-- ACTION BUTTON -->
+
+        <div class="print-actions">
+
+            <button
+                class="print-primary"
+                onclick="saveServiceImage()"
+            >
+                Save Image
+            </button>
+
+            <button onclick="shareService()">
+                Share
+            </button>
+
+            <button onclick="printCurrentService()">
+                Print
+            </button>
+
+            <button onclick="closePrintPreview()">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+    
 <script src="script.js"></script>
 
 </body>
