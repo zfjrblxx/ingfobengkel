@@ -135,25 +135,30 @@
   
 
 
-    <!-- PAJAK -->
-    <section class="section">
+  <section class="section">
 
-        <div class="section-title">
-            <h2>VEHICLE TAX</h2>
-            <button onclick="openTax()">Edit</button>
+    <div class="section-title">
+        <h2>VEHICLE TAX</h2>
+        <button onclick="openTax()">Edit</button>
+    </div>
+
+    <div class="tax-card">
+
+        <div class="tax-icon">📄</div>
+
+        <div class="tax-info">
+            <small>NEXT PAYMENT</small>
+
+            <strong id="taxDateText">Not set</strong>
+
+            <span class="tax-prepare" id="taxPrepare"></span>
         </div>
 
-        <div class="tax-card">
+        <div class="tax-days" id="taxDays"></div>
 
-            <div class="tax-icon">📄</div>
+    </div>
 
-            <div class="tax-info">
-    <small>NEXT PAYMENT</small>
-    <strong id="taxDateText">Not set</strong>
-    <span class="tax-prepare" id="taxPrepare"></span>
-</div>
-
-    </section>
+</section>
 
 
 
