@@ -615,3 +615,163 @@ function render() {
 
 render();
 
+// ========================================
+// BACKUP DATA
+// ========================================
+
+function backupData() {
+
+    const backup = {
+        version: 1,
+        createdAt: new Date().toISOString(),
+        vehicle: vehicle,
+        services: services,
+        tax: tax
+    };
+
+    const json =
+        JSON.stringify(backup, null, 2);
+
+    const blob =
+        new Blob(
+            [json],
+            { type: "application/json" }
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    const date =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+    link.href = url;
+
+    link.download =
+        "my-garage-backup-" +
+        date +
+        ".json";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+}
+
+
+// ========================================
+// OPEN RESTORE
+// ========================================
+
+function openRestore() {
+
+    document
+        .getElementById("restoreFile")
+        .click();
+}
+
+
+// ========================================
+// RESTORE DATA
+// ========================================
+
+function restoreData(event) {
+
+    const file =
+        event.target.files[0];
+
+    if (!file) return;
+
+
+    const reader =
+        new FileReader();
+
+
+    reader.onload = function(e) {
+
+        try {
+
+            const backup =
+                JSON.parse(e.target.result);
+
+
+            // Cek file backup
+            if (
+                !backup.vehicle ||
+                !Array.isArray(backup.services) ||
+                !backup.tax
+            ) {
+
+                alert(
+                    "File backup tidak valid."
+                );
+
+                return;
+            }
+
+
+            const confirmRestore =
+                confirm(
+                    "Restore data ini?\n\n" +
+                    "Data My Garage saat ini akan diganti dengan data dari backup."
+                );
+
+
+            if (!confirmRestore) {
+
+                event.target.value = "";
+
+                return;
+            }
+
+
+            // Ganti data
+            vehicle = backup.vehicle;
+
+            services = backup.services;
+
+            tax = backup.tax;
+
+
+            // Simpan ke localStorage
+            saveData();
+
+
+            // Update tampilan
+            render();
+
+
+            alert(
+                "Data berhasil dipulihkan!"
+            );
+
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+            alert(
+                "File tidak dapat dibaca. Pastikan kamu memilih file backup My Garage."
+            );
+
+        }
+
+
+        // Supaya file yang sama bisa dipilih lagi
+        event.target.value = "";
+
+    };
+
+
+    reader.readAsText(file);
+
+}
