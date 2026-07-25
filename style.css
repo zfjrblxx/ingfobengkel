@@ -1,4 +1,4 @@
-```css
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -597,4 +597,53 @@ button {
     }
 
 }
-```
+
+/* =========================
+   BACKUP & RESTORE
+========================= */
+
+.backup-card {
+    background: #fff;
+    border-radius: 22px;
+    padding: 20px;
+}
+
+.backup-info strong {
+    display: block;
+    font-size: 14px;
+}
+
+.backup-info small {
+    display: block;
+    color: #999;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.backup-btn,
+.restore-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 14px;
+    padding: 13px;
+    margin-top: 13px;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.backup-btn {
+    background: #171717;
+    color: #fff;
+}
+
+.restore-btn {
+    background: #f1f1f1;
+    color: #171717;
+}
+
+.backup-divider {
+    height: 1px;
+    background: #eeeeee;
+    margin: 20px 0;
+}
