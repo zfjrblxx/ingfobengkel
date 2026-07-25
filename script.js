@@ -2675,3 +2675,93 @@ function shareService() {
 
     }
 }
+
+
+
+
+
+
+// ========================================
+// HARGA BBM
+// ========================================
+
+async function loadFuelPrices() {
+
+    const pertalite =
+        document.getElementById("pertalitePrice");
+
+    const pertamax =
+        document.getElementById("pertamaxPrice");
+
+    const update =
+        document.getElementById("fuelUpdate");
+
+
+    if (!pertalite || !pertamax) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch("/api/fuel-prices");
+
+
+        if (!response.ok) {
+            throw new Error("API gagal");
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            typeof data.pertalite !== "number" ||
+            typeof data.pertamax !== "number"
+        ) {
+            throw new Error("Data harga tidak valid");
+        }
+
+
+        pertalite.textContent =
+            formatRupiah(data.pertalite) + " / L";
+
+        pertamax.textContent =
+            formatRupiah(data.pertamax) + " / L";
+
+
+        if (update) {
+
+            update.textContent =
+                data.updated
+                    ? "Update " + data.updated
+                    : "Harga terbaru";
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal mengambil harga BBM:",
+            error
+        );
+
+
+        pertalite.textContent = "Tidak tersedia";
+
+        pertamax.textContent = "Tidak tersedia";
+
+
+        if (update) {
+            update.textContent =
+                "Harga gagal dimuat";
+        }
+    }
+}
+
+
+// Jalankan
+loadFuelPrices();
