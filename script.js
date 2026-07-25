@@ -348,17 +348,55 @@ function openVehicle() {
 
 function saveVehicle() {
 
+    const name =
+        document
+            .getElementById("inputVehicleName")
+            .value
+            .trim();
+
+    const plate =
+        document
+            .getElementById("inputPlate")
+            .value
+            .trim();
+
+    const year =
+        document
+            .getElementById("inputYear")
+            .value
+            .trim();
+
+
+    // Nama kendaraan
+    if (name.length > 50) {
+        alert("Nama kendaraan maksimal 50 karakter.");
+        return;
+    }
+
+
+    // Plat nomor
+    if (plate.length > 20) {
+        alert("Plat nomor maksimal 20 karakter.");
+        return;
+    }
+
+
+    // Tahun
+    if (year.length > 10) {
+        alert("Tahun kendaraan tidak valid.");
+        return;
+    }
+
+
     vehicle.name =
-        document.getElementById("inputVehicleName").value.trim()
-        || "My Motorcycle";
+        name || "My Motorcycle";
 
     vehicle.plate =
-        document.getElementById("inputPlate").value.trim()
-        || "-";
+        plate || "-";
 
     vehicle.year =
-        document.getElementById("inputYear").value
-        || "-";
+        year || "-";
+
 
     saveData();
 
@@ -383,19 +421,37 @@ function openOdometer() {
 
 function saveOdometer() {
 
-    const km =
-        Number(
-            document.getElementById("inputOdometer").value
-        );
+    const input =
+        document.getElementById(
+            "inputOdometer"
+        ).value.trim();
 
-    if (km < 0 || isNaN(km)) {
+
+    if (input === "") {
+        alert("Masukkan kilometer.");
+        return;
+    }
+
+
+    const km =
+        Number(input);
+
+
+    if (
+        !Number.isFinite(km) ||
+        km < 0 ||
+        km > 9999999
+    ) {
 
         alert("Masukkan kilometer yang valid.");
 
         return;
     }
 
-    vehicle.odometer = km;
+
+    vehicle.odometer =
+        Math.round(km);
+
 
     saveData();
 
@@ -438,19 +494,50 @@ function openService() {
 function saveService() {
 
     const date =
-        document.getElementById("serviceDate").value;
+        document.getElementById(
+            "serviceDate"
+        ).value;
+
 
     const name =
-        document
-            .getElementById("serviceName")
-            .value
-            .trim();
+        document.getElementById(
+            "serviceName"
+        ).value.trim();
 
-    const km =
-        Number(
-            document.getElementById("serviceKm").value
-        );
 
+    const kmInput =
+        document.getElementById(
+            "serviceKm"
+        ).value.trim();
+
+
+    const part =
+        document.getElementById(
+            "servicePart"
+        ).value.trim();
+
+
+    const workshop =
+        document.getElementById(
+            "serviceWorkshop"
+        ).value.trim();
+
+
+    const costInput =
+        document.getElementById(
+            "serviceCost"
+        ).value.trim();
+
+
+    const notes =
+        document.getElementById(
+            "serviceNotes"
+        ).value.trim();
+
+
+    // ====================================
+    // TANGGAL
+    // ====================================
 
     if (!date) {
 
@@ -460,6 +547,10 @@ function saveService() {
     }
 
 
+    // ====================================
+    // NAMA SERVICE
+    // ====================================
+
     if (!name) {
 
         alert("Masukkan jenis servis.");
@@ -468,54 +559,130 @@ function saveService() {
     }
 
 
+    if (name.length > 100) {
+
+        alert(
+            "Jenis servis maksimal 100 karakter."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // KM
+    // ====================================
+
+    const km =
+        kmInput === ""
+            ? vehicle.odometer
+            : Number(kmInput);
+
+
+    if (
+        !Number.isFinite(km) ||
+        km < 0 ||
+        km > 9999999
+    ) {
+
+        alert(
+            "Kilometer servis tidak valid."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // BIAYA
+    // ====================================
+
+    const cost =
+        costInput === ""
+            ? 0
+            : Number(costInput);
+
+
+    if (
+        !Number.isFinite(cost) ||
+        cost < 0 ||
+        cost > 999999999999
+    ) {
+
+        alert(
+            "Biaya servis tidak valid."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // BATAS PANJANG TEXT
+    // ====================================
+
+    if (part.length > 500) {
+
+        alert(
+            "Spare part maksimal 500 karakter."
+        );
+
+        return;
+    }
+
+
+    if (workshop.length > 100) {
+
+        alert(
+            "Nama bengkel maksimal 100 karakter."
+        );
+
+        return;
+    }
+
+
+    if (notes.length > 1000) {
+
+        alert(
+            "Catatan maksimal 1000 karakter."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // SIMPAN
+    // ====================================
+
     const item = {
 
         id: Date.now(),
 
         date: date,
 
-        km:
-            !isNaN(km) && km >= 0
-                ? km
-                : vehicle.odometer,
+        km: Math.round(km),
 
         name: name,
 
-        part:
-            document
-                .getElementById("servicePart")
-                .value
-                .trim(),
+        part: part,
 
-        workshop:
-            document
-                .getElementById("serviceWorkshop")
-                .value
-                .trim(),
+        workshop: workshop,
 
-        cost:
-            Number(
-                document.getElementById("serviceCost").value
-            ) || 0,
+        cost: Math.round(cost),
 
-        notes:
-            document
-                .getElementById("serviceNotes")
-                .value
-                .trim()
-
+        notes: notes
     };
 
 
     services.push(item);
 
 
-    // Update odometer jika KM servis lebih tinggi
+    // Update odometer
     if (item.km > vehicle.odometer) {
 
         vehicle.odometer =
             item.km;
-
     }
 
 
@@ -570,13 +737,43 @@ function openTax() {
 
 function saveTax() {
 
+    const date =
+        document.getElementById(
+            "taxDate"
+        ).value;
+
+
+    const costInput =
+        document.getElementById(
+            "taxCost"
+        ).value.trim();
+
+
+    const cost =
+        costInput === ""
+            ? 0
+            : Number(costInput);
+
+
+    if (
+        !Number.isFinite(cost) ||
+        cost < 0 ||
+        cost > 999999999999
+    ) {
+
+        alert(
+            "Nominal pajak tidak valid."
+        );
+
+        return;
+    }
+
+
     tax.date =
-        document.getElementById("taxDate").value;
+        date;
 
     tax.cost =
-        Number(
-            document.getElementById("taxCost").value
-        ) || 0;
+        Math.round(cost);
 
 
     saveData();
