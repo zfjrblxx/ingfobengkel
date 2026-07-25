@@ -1898,7 +1898,7 @@ function restoreData(event) {
             }
 
 
-           // ====================================
+// ====================================
 // VALIDASI VEHICLE
 // ====================================
 
@@ -1922,62 +1922,21 @@ if (!isValidServices(backup.services)) {
 }
 
 
-            // Batasi jumlah data servis
-            if (backup.services.length > 5000) {
+// ====================================
+// VALIDASI TAX
+// ====================================
 
-                throw new Error(
-                    "Jumlah riwayat servis terlalu banyak."
-                );
-            }
+if (!isValidTax(backup.tax)) {
 
-
-            const validServices =
-                backup.services.every(item => {
-
-                    if (
-                        !item ||
-                        typeof item !== "object" ||
-                        Array.isArray(item)
-                    ) {
-                        return false;
-                    }
+    throw new Error(
+        "Data pajak rusak atau tidak valid."
+    );
+}
 
 
-                    return (
-                        (
-                            typeof item.id === "number" ||
-                            typeof item.id === "string"
-                        ) &&
-
-                        isValidDate(item.date) &&
-item.date !== "" &&
-
-                        typeof item.name === "string" &&
-
-                        typeof item.km === "number" &&
-                        Number.isFinite(item.km) &&
-                        item.km >= 0 &&
-
-                        typeof item.part === "string" &&
-
-                        typeof item.workshop === "string" &&
-
-                        typeof item.cost === "number" &&
-                        Number.isFinite(item.cost) &&
-                        item.cost >= 0 &&
-
-                        typeof item.notes === "string"
-                    );
-
-                });
-
-
-            if (!validServices) {
-
-                throw new Error(
-                    "Ada data servis yang tidak valid."
-                );
-            }
+// ====================================
+// KONFIRMASI RESTORE
+// ====================================
 
 
            // ====================================
