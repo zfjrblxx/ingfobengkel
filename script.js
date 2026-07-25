@@ -705,62 +705,73 @@ function renderTax() {
     const taxDays =
         document.getElementById("taxDays");
 
+    const taxPrepare =
+        document.getElementById("taxPrepare");
+
 
     if (!taxDateText || !taxDays) {
         return;
     }
 
 
+    // Belum ada data pajak
     if (!tax.date) {
 
-        taxDateText.textContent =
-            "Not set";
+        taxDateText.textContent = "Not set";
+        taxDays.textContent = "";
 
-        taxDays.textContent =
-            "";
+        if (taxPrepare) {
+            taxPrepare.textContent = "";
+        }
 
         return;
     }
 
 
+    // Tanggal pembayaran
     taxDateText.textContent =
         formatDate(tax.date);
 
 
-    const today =
-        new Date();
+    // Nominal yang harus disiapkan
+    if (taxPrepare) {
+
+        if (tax.cost > 0) {
+
+            taxPrepare.textContent =
+                "Siapkan " + formatRupiah(tax.cost);
+
+        } else {
+
+            taxPrepare.textContent = "";
+
+        }
+
+    }
 
 
-    today.setHours(
-        0,
-        0,
-        0,
-        0
-    );
+    // Hitung countdown
+    const today = new Date();
+
+    today.setHours(0, 0, 0, 0);
 
 
     const due =
         new Date(
-            tax.date +
-            "T00:00:00"
+            tax.date + "T00:00:00"
         );
 
 
     const difference =
         Math.ceil(
-            (
-                due -
-                today
-            ) /
-            86400000
+            (due - today) / 86400000
         );
 
 
     if (difference > 0) {
 
         taxDays.textContent =
-            difference +
-            " days";
+            difference + " days";
 
     }
 
