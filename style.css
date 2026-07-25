@@ -974,66 +974,48 @@ button {
 ======================================== */
 
 .fuel-section {
-    margin-top: 60px;
-    margin-bottom: 60px;
+    margin-top: 35px;
+    margin-bottom: 35px;
 }
 
-.fuel-subtitle {
-    margin-top: 6px;
-    margin-bottom: 20px;
+.fuel-region {
+    margin-top: 5px;
+    margin-bottom: 14px;
 
-    font-size: 12px;
-    opacity: 0.5;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #999;
 }
 
 .fuel-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px;
 }
 
-.fuel-item {
-    padding: 20px;
-
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
+.fuel-card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 18px 16px;
 }
 
 .fuel-name {
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    opacity: 0.5;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: #999;
 }
 
 .fuel-price {
-    margin-top: 12px;
+    margin-top: 8px;
 
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
-}
-
-.fuel-unit {
-    margin-top: 5px;
-
-    font-size: 9px;
-    letter-spacing: 1px;
-    opacity: 0.4;
+    color: #111;
 }
 
 .fuel-update {
-    margin-top: 12px;
+    margin-top: 10px;
 
-    font-size: 10px;
-    opacity: 0.4;
-}
-
-
-/* MOBILE */
-
-@media (max-width: 600px) {
-
-    .fuel-grid {
-        grid-template-columns: 1fr;
-    }
-
+    font-size: 9px;
+    color: #aaa;
 }
