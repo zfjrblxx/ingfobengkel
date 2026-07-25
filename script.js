@@ -1008,27 +1008,71 @@ function saveTax() {
 
 
 // ========================================
-// SAVE LOCAL STORAGE - SAFE
+// SAVE LOCAL STORAGE - SAFE + ROLLBACK
 // ========================================
 
 function saveData() {
 
+    // ====================================
+    // BACKUP LOCAL STORAGE LAMA
+    // ====================================
+
+    let oldVehicle;
+    let oldServices;
+    let oldTax;
+
+
     try {
+
+        oldVehicle =
+            localStorage.getItem(
+                "garageVehicle"
+            );
+
+        oldServices =
+            localStorage.getItem(
+                "garageServices"
+            );
+
+        oldTax =
+            localStorage.getItem(
+                "garageTax"
+            );
+
+
+        // ====================================
+        // SIAPKAN DATA BARU
+        // ====================================
+
+        const newVehicle =
+            JSON.stringify(vehicle);
+
+        const newServices =
+            JSON.stringify(services);
+
+        const newTax =
+            JSON.stringify(tax);
+
+
+        // ====================================
+        // SIMPAN DATA BARU
+        // ====================================
 
         localStorage.setItem(
             "garageVehicle",
-            JSON.stringify(vehicle)
+            newVehicle
         );
 
         localStorage.setItem(
             "garageServices",
-            JSON.stringify(services)
+            newServices
         );
 
         localStorage.setItem(
             "garageTax",
-            JSON.stringify(tax)
+            newTax
         );
+
 
         return true;
 
@@ -1042,10 +1086,48 @@ function saveData() {
         );
 
 
-        // Storage penuh
+        // ====================================
+        // ROLLBACK LOCAL STORAGE
+        // ====================================
+
+        try {
+
+            restoreStorageValue(
+                "garageVehicle",
+                oldVehicle
+            );
+
+            restoreStorageValue(
+                "garageServices",
+                oldServices
+            );
+
+            restoreStorageValue(
+                "garageTax",
+                oldTax
+            );
+
+        }
+
+        catch (rollbackError) {
+
+            console.error(
+                "Rollback localStorage gagal:",
+                rollbackError
+            );
+        }
+
+
+        // ====================================
+        // PESAN ERROR
+        // ====================================
+
         if (
-            error.name === "QuotaExceededError" ||
-            error.name === "NS_ERROR_DOM_QUOTA_REACHED"
+            error.name ===
+                "QuotaExceededError" ||
+
+            error.name ===
+                "NS_ERROR_DOM_QUOTA_REACHED"
         ) {
 
             alert(
@@ -1055,12 +1137,11 @@ function saveData() {
 
         }
 
-        // Error lainnya
         else {
 
             alert(
                 "Data gagal disimpan.\n\n" +
-                "Pastikan browser mengizinkan penyimpanan data."
+                "Perubahan dibatalkan."
             );
 
         }
@@ -1068,6 +1149,32 @@ function saveData() {
 
         return false;
     }
+}
+
+
+// ========================================
+// RESTORE NILAI LOCAL STORAGE
+// ========================================
+
+function restoreStorageValue(
+    key,
+    oldValue
+) {
+
+    // Key sebelumnya tidak ada
+    if (oldValue === null) {
+
+        localStorage.removeItem(key);
+
+        return;
+    }
+
+
+    // Kembalikan nilai lama
+    localStorage.setItem(
+        key,
+        oldValue
+    );
 }
 
 
@@ -1791,50 +1898,28 @@ function restoreData(event) {
             }
 
 
-            // ====================================
-            // VALIDASI VEHICLE
-            // ====================================
+           // ====================================
+// VALIDASI VEHICLE
+// ====================================
 
-            if (
-                !backup.vehicle ||
-                typeof backup.vehicle !== "object" ||
-                Array.isArray(backup.vehicle)
-            ) {
+if (!isValidVehicle(backup.vehicle)) {
 
-                throw new Error(
-                    "Data kendaraan tidak valid."
-                );
-            }
+    throw new Error(
+        "Data kendaraan rusak atau tidak valid."
+    );
+}
 
 
-            if (
-                typeof backup.vehicle.name !== "string" ||
-                typeof backup.vehicle.plate !== "string" ||
-                (
-                    typeof backup.vehicle.year !== "string" &&
-                    typeof backup.vehicle.year !== "number"
-                ) ||
-                typeof backup.vehicle.odometer !== "number" ||
-                !Number.isFinite(backup.vehicle.odometer) ||
-                backup.vehicle.odometer < 0
-            ) {
+// ====================================
+// VALIDASI SERVICES
+// ====================================
 
-                throw new Error(
-                    "Data kendaraan rusak atau tidak valid."
-                );
-            }
+if (!isValidServices(backup.services)) {
 
-
-            // ====================================
-            // VALIDASI SERVICES
-            // ====================================
-
-            if (!Array.isArray(backup.services)) {
-
-                throw new Error(
-                    "Riwayat servis tidak valid."
-                );
-            }
+    throw new Error(
+        "Riwayat servis rusak atau tidak valid."
+    );
+}
 
 
             // Batasi jumlah data servis
@@ -1895,31 +1980,11 @@ item.date !== "" &&
             }
 
 
-            // ====================================
-            // VALIDASI TAX
-            // ====================================
+           // ====================================
+// VALIDASI TAX
+// ====================================
 
-            if (
-                !backup.tax ||
-                typeof backup.tax !== "object" ||
-                Array.isArray(backup.tax)
-            ) {
-
-                throw new Error(
-                    "Data pajak tidak valid."
-                );
-            }
-
-
-           if (
-    !isValidDate(backup.tax.date) ||
-
-    typeof backup.tax.cost !== "number" ||
-
-    !Number.isFinite(backup.tax.cost) ||
-
-    backup.tax.cost < 0
-) {
+if (!isValidTax(backup.tax)) {
 
     throw new Error(
         "Data pajak rusak atau tidak valid."
