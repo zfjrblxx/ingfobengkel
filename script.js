@@ -2434,12 +2434,23 @@ function renderFuelHistory() {
                             </div>
 
 
-                            <button
-                                class="fuel-delete-btn"
-                                onclick="deleteFuel(${item.id})"
-                            >
-                                DELETE
-                            </button>
+                            <div class="history-actions">
+
+    <button
+        class="print-btn"
+        onclick="printFuel(${item.id})"
+    >
+        PRINT
+    </button>
+
+    <button
+        class="fuel-delete-btn"
+        onclick="deleteFuel(${item.id})"
+    >
+        DELETE
+    </button>
+
+</div>
 
                         </div>
 
@@ -2495,6 +2506,301 @@ function deleteFuel(id) {
     // Update tampilan
     render();
 }
+
+// ========================================
+// PRINT FUEL
+// ========================================
+
+function printFuel(id) {
+
+    const item =
+        fuelLogs.find(
+            fuel => fuel.id === id
+        );
+
+
+    if (!item) {
+
+        alert(
+            "Data Fuel Log tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    const pricePerLiter =
+        item.liter > 0
+            ? item.cost / item.liter
+            : 0;
+
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if (!printWindow) {
+
+        alert(
+            "Izinkan pop-up untuk Print."
+        );
+
+        return;
+    }
+
+
+    printWindow.document.write(`
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>Fuel Log - Ingfo Bengkel</title>
+
+            <style>
+
+                @page {
+                    size: A5 portrait;
+                    margin: 15mm;
+                }
+
+                * {
+                    box-sizing: border-box;
+                }
+
+                body {
+                    margin: 0;
+                    font-family:
+                        "Courier New",
+                        monospace;
+                    color: #111;
+                }
+
+                .receipt {
+                    width: 100%;
+                    padding: 20px;
+                }
+
+                .header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                }
+
+                .header h1 {
+                    margin: 0;
+                    font-size: 21px;
+                    letter-spacing: 5px;
+                }
+
+                .header p {
+                    margin-top: 8px;
+                    font-size: 8px;
+                    letter-spacing: 3px;
+                }
+
+                .line {
+                    border-top:
+                        1px dashed #888;
+
+                    margin: 22px 0;
+                }
+
+                .row {
+                    display: flex;
+                    justify-content: space-between;
+                    gap: 20px;
+
+                    margin-bottom: 12px;
+
+                    font-size: 9px;
+                }
+
+                .row strong {
+                    text-align: right;
+                }
+
+                .fuel-name {
+                    font-size: 14px;
+                    font-weight: bold;
+                    text-transform: uppercase;
+
+                    margin-bottom: 20px;
+                }
+
+                .total {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+
+                    font-size: 10px;
+                }
+
+                .total strong {
+                    font-size: 14px;
+                }
+
+                .footer {
+                    margin-top: 30px;
+
+                    text-align: center;
+
+                    font-size: 7px;
+                    letter-spacing: 2px;
+                }
+
+            </style>
+
+        </head>
+
+
+        <body>
+
+            <div class="receipt">
+
+                <div class="header">
+
+                    <h1>
+                        INGFO BENGKEL
+                    </h1>
+
+                    <p>
+                        FUEL LOG
+                    </p>
+
+                </div>
+
+
+                <div class="line"></div>
+
+
+                <div class="row">
+
+                    <span>
+                        DATE
+                    </span>
+
+                    <strong>
+                        ${formatDate(item.date)}
+                    </strong>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        VEHICLE
+                    </span>
+
+                    <strong>
+                        ${escapeHTML(vehicle.name)}
+                    </strong>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        ODOMETER
+                    </span>
+
+                    <strong>
+                        ${formatNumber(item.km)} KM
+                    </strong>
+
+                </div>
+
+
+                <div class="line"></div>
+
+
+                <div class="fuel-name">
+                    ${escapeHTML(item.type)}
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        PRICE / LITER
+                    </span>
+
+                    <strong>
+                        ${formatRupiah(
+                            Math.round(
+                                pricePerLiter
+                            )
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        LITER
+                    </span>
+
+                    <strong>
+                        ${item.liter.toFixed(2)} L
+                    </strong>
+
+                </div>
+
+
+                <div class="line"></div>
+
+
+                <div class="total">
+
+                    <span>
+                        TOTAL
+                    </span>
+
+                    <strong>
+                        ${formatRupiah(item.cost)}
+                    </strong>
+
+                </div>
+
+
+                <div class="footer">
+
+                    INGFO BENGKEL ·
+                    ${formatDate(item.date).toUpperCase()}
+
+                </div>
+
+            </div>
+
+
+            <script>
+
+                window.onload =
+                    function () {
+
+                        window.print();
+
+                    };
+
+            <\/script>
+
+        </body>
+
+        </html>
+    `);
+
+
+    printWindow.document.close();
+}
+
+
 // ========================================
 // BACKUP DATA
 // ========================================
