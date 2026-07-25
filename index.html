@@ -729,6 +729,207 @@
     </div>
 
 </div>
+
+<!-- =========================
+     FUEL PRINT PREVIEW
+========================= -->
+
+<div class="print-preview" id="fuelPrintPreview">
+
+    <div class="print-preview-inner">
+
+        <div
+            class="service-receipt"
+            id="fuelReceipt"
+        >
+
+            <div class="receipt-content">
+
+                <!-- HEADER -->
+
+                <div class="receipt-header">
+
+                    <h1>
+                        INGFO BENGKEL
+                    </h1>
+
+                    <p>
+                        FUEL LOG
+                    </p>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <!-- VEHICLE INFO -->
+
+                <div class="receipt-row">
+
+                    <span>
+                        DATE
+                    </span>
+
+                    <strong id="fuelPrintDate">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-row">
+
+                    <span>
+                        ODOMETER
+                    </span>
+
+                    <strong id="fuelPrintKm">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-row">
+
+                    <span>
+                        VEHICLE
+                    </span>
+
+                    <strong id="fuelPrintVehicle">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <!-- FUEL TYPE -->
+
+                <div class="receipt-service">
+
+                    <h2 id="fuelPrintType">
+                        -
+                    </h2>
+
+                </div>
+
+
+                <!-- PRICE / LITER -->
+
+                <div class="receipt-detail">
+
+                    <span>
+                        PRICE / LITER
+                    </span>
+
+                    <strong id="fuelPrintPrice">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <!-- LITER -->
+
+                <div class="receipt-detail">
+
+                    <span>
+                        LITER
+                    </span>
+
+                    <strong id="fuelPrintLiter">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <!-- TOTAL -->
+
+                <div class="receipt-total">
+
+                    <span>
+                        TOTAL
+                    </span>
+
+                    <strong id="fuelPrintCost">
+                        -
+                    </strong>
+
+                </div>
+
+
+                <div class="receipt-line"></div>
+
+
+                <!-- FOOTER -->
+
+                <div
+                    class="receipt-footer"
+                    id="fuelPrintFooter"
+                >
+                    INGFO BENGKEL
+                </div>
+
+
+                <div class="receipt-tear">
+
+                    ✂
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="print-actions">
+
+            <button
+                onclick="printCurrentFuel()"
+            >
+                PRINT
+            </button>
+
+
+            <button
+                onclick="saveFuelImage()"
+            >
+                SAVE IMAGE
+            </button>
+
+
+            <button
+                onclick="shareFuel()"
+            >
+                SHARE
+            </button>
+
+
+            <button
+                onclick="closeFuelPrintPreview()"
+            >
+                CLOSE
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
     
 <script src="script.js"></script>
     
