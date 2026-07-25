@@ -140,7 +140,8 @@ function isValidService(item) {
             typeof item.id === "string"
         ) &&
 
-        typeof item.date === "string" &&
+        isValidDate(item.date) &&
+item.date !== "" &&
 
         typeof item.name === "string" &&
 
@@ -204,7 +205,7 @@ function isValidTax(data) {
 
 
     return (
-        typeof data.date === "string" &&
+        isValidDate(data.date) &&
 
         typeof data.cost === "number" &&
 
@@ -288,6 +289,39 @@ function getToday() {
     return `${year}-${month}-${day}`;
 }
 
+// ========================================
+// VALIDATE DATE
+// FORMAT: YYYY-MM-DD
+// ========================================
+
+function isValidDate(value) {
+
+    if (typeof value !== "string") {
+        return false;
+    }
+
+    // Pajak boleh belum diatur
+    if (value === "") {
+        return true;
+    }
+
+    // Harus YYYY-MM-DD
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+        return false;
+    }
+
+    const [year, month, day] =
+        value.split("-").map(Number);
+
+    const date =
+        new Date(year, month - 1, day);
+
+    return (
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+    );
+}
 
 // ========================================
 // MODAL
@@ -539,12 +573,13 @@ function saveService() {
     // TANGGAL
     // ====================================
 
-    if (!date) {
+    if (!isValidDate(date)) {
 
-        alert("Pilih tanggal servis.");
+    alert("Tanggal servis tidak valid.");
 
-        return;
-    }
+    return;
+}
+    
 
 
     // ====================================
@@ -742,7 +777,12 @@ function saveTax() {
             "taxDate"
         ).value;
 
+if (!isValidDate(date)) {
 
+    alert("Tanggal pajak tidak valid.");
+
+    return;
+}
     const costInput =
         document.getElementById(
             "taxCost"
@@ -1602,7 +1642,8 @@ function restoreData(event) {
                             typeof item.id === "string"
                         ) &&
 
-                        typeof item.date === "string" &&
+                        isValidDate(item.date) &&
+item.date !== "" &&
 
                         typeof item.name === "string" &&
 
@@ -1648,20 +1689,20 @@ function restoreData(event) {
             }
 
 
-            if (
-                typeof backup.tax.date !== "string" ||
+           if (
+    !isValidDate(backup.tax.date) ||
 
-                typeof backup.tax.cost !== "number" ||
+    typeof backup.tax.cost !== "number" ||
 
-                !Number.isFinite(backup.tax.cost) ||
+    !Number.isFinite(backup.tax.cost) ||
 
-                backup.tax.cost < 0
-            ) {
+    backup.tax.cost < 0
+) {
 
-                throw new Error(
-                    "Data pajak rusak atau tidak valid."
-                );
-            }
+    throw new Error(
+        "Data pajak rusak atau tidak valid."
+    );
+}
 
 
             // ====================================
