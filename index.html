@@ -231,6 +231,48 @@
     </section>
 
 
+
+<section class="section">
+
+    <div class="section-title">
+        <h2>DATA & BACKUP</h2>
+    </div>
+
+    <div class="backup-card">
+
+        <div class="backup-info">
+            <strong>Backup Data</strong>
+            <small>Simpan seluruh data My Garage ke file</small>
+        </div>
+
+        <button class="backup-btn" onclick="backupData()">
+            ↓ BACKUP DATA
+        </button>
+
+        <div class="backup-divider"></div>
+
+        <div class="backup-info">
+            <strong>Restore Data</strong>
+            <small>Pulihkan data dari file backup</small>
+        </div>
+
+        <button class="restore-btn" onclick="openRestore()">
+            ↑ RESTORE DATA
+        </button>
+
+        <input
+            type="file"
+            id="restoreFile"
+            accept=".json,application/json"
+            onchange="restoreData(event)"
+            hidden
+        >
+
+    </div>
+
+</section>
+    
+
     <!-- HISTORY -->
     <section class="section">
 
