@@ -841,7 +841,7 @@ if (!saveData()) {
 render();
 
 closeModal("serviceModal");
-
+}
 
 // ========================================
 // DELETE SERVICE
