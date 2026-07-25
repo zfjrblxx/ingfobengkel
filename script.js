@@ -790,25 +790,57 @@ if (!isValidDate(date)) {
     };
 
 
-    services.push(item);
+    // ====================================
+// BACKUP DATA LAMA
+// ====================================
+
+const oldServices =
+    [...services];
+
+const oldOdometer =
+    vehicle.odometer;
 
 
-    // Update odometer
-    if (item.km > vehicle.odometer) {
+// ====================================
+// UPDATE DATA
+// ====================================
 
-        vehicle.odometer =
-            item.km;
-    }
+services.push(item);
 
+
+// Update odometer jika KM servis lebih tinggi
+if (item.km > vehicle.odometer) {
+
+    vehicle.odometer =
+        item.km;
+}
+
+
+// ====================================
+// SIMPAN
+// ====================================
 
 if (!saveData()) {
+
+    // Rollback services
+    services =
+        oldServices;
+
+    // Rollback odometer
+    vehicle.odometer =
+        oldOdometer;
+
     return;
 }
 
+
+// ====================================
+// BERHASIL
+// ====================================
+
 render();
 
-    closeModal("serviceModal");
-}
+closeModal("serviceModal");
 
 
 // ========================================
@@ -821,8 +853,22 @@ function deleteService(id) {
         confirm("Hapus riwayat servis ini?");
 
 
-    if (!confirmDelete) return;
+    if (!confirmDelete) {
+        return;
+    }
 
+
+    // ====================================
+    // BACKUP DATA LAMA
+    // ====================================
+
+    const oldServices =
+        [...services];
+
+
+    // ====================================
+    // HAPUS SERVICE
+    // ====================================
 
     services =
         services.filter(
@@ -830,11 +876,25 @@ function deleteService(id) {
         );
 
 
-if (!saveData()) {
-    return;
-}
+    // ====================================
+    // SIMPAN
+    // ====================================
 
-render();
+    if (!saveData()) {
+
+        // Rollback
+        services =
+            oldServices;
+
+        return;
+    }
+
+
+    // ====================================
+    // BERHASIL
+    // ====================================
+
+    render();
 }
 
 
@@ -861,12 +921,19 @@ function saveTax() {
             "taxDate"
         ).value;
 
-if (!isValidDate(date)) {
 
-    alert("Tanggal pajak tidak valid.");
+    // ====================================
+    // VALIDASI TANGGAL
+    // ====================================
 
-    return;
-}
+    if (!isValidDate(date)) {
+
+        alert("Tanggal pajak tidak valid.");
+
+        return;
+    }
+
+
     const costInput =
         document.getElementById(
             "taxCost"
@@ -878,6 +945,10 @@ if (!isValidDate(date)) {
             ? 0
             : Number(costInput);
 
+
+    // ====================================
+    // VALIDASI NOMINAL
+    // ====================================
 
     if (
         !Number.isFinite(cost) ||
@@ -893,6 +964,18 @@ if (!isValidDate(date)) {
     }
 
 
+    // ====================================
+    // BACKUP DATA LAMA
+    // ====================================
+
+    const oldTax =
+        { ...tax };
+
+
+    // ====================================
+    // UPDATE DATA
+    // ====================================
+
     tax.date =
         date;
 
@@ -900,11 +983,25 @@ if (!isValidDate(date)) {
         Math.round(cost);
 
 
-if (!saveData()) {
-    return;
-}
+    // ====================================
+    // SIMPAN
+    // ====================================
 
-render();
+    if (!saveData()) {
+
+        // Rollback
+        tax =
+            oldTax;
+
+        return;
+    }
+
+
+    // ====================================
+    // BERHASIL
+    // ====================================
+
+    render();
 
     closeModal("taxModal");
 }
@@ -1853,26 +1950,64 @@ item.date !== "" &&
             // RESTORE
             // ====================================
 
-            vehicle =
-                backup.vehicle;
+// ====================================
+// BACKUP DATA LAMA
+// ====================================
 
-            services =
-                backup.services;
+const oldVehicle =
+    vehicle;
 
-            tax =
-                backup.tax;
+const oldServices =
+    services;
 
+const oldTax =
+    tax;
+
+
+// ====================================
+// PASANG DATA RESTORE
+// ====================================
+
+vehicle =
+    backup.vehicle;
+
+services =
+    backup.services;
+
+tax =
+    backup.tax;
+
+
+// ====================================
+// SIMPAN
+// ====================================
 
 if (!saveData()) {
+
+    // Rollback vehicle
+    vehicle =
+        oldVehicle;
+
+    // Rollback services
+    services =
+        oldServices;
+
+    // Rollback tax
+    tax =
+        oldTax;
+
     return;
 }
+
+
+// ====================================
+// BERHASIL
+// ====================================
 
 render();
 
 
-            alert(
-                "Data berhasil dipulihkan!"
-            );
+       
 
         }
 
