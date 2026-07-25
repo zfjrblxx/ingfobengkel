@@ -251,45 +251,27 @@
     </section>
 
 
-<section class="section">
+<div class="header-actions">
+    <button class="icon-btn" onclick="backupData()" title="Backup Data">
+        ↓
+    </button>
 
-    <div class="section-title">
-        <h2>DATA & BACKUP</h2>
-    </div>
+    <button class="icon-btn" onclick="openRestore()" title="Restore Data">
+        ↑
+    </button>
 
-    <div class="backup-card">
+    <button class="icon-btn" onclick="openVehicle()" title="Settings">
+        ⚙️
+    </button>
 
-        <div class="backup-info">
-            <strong>Backup Data</strong>
-            <small>Simpan seluruh data My Garage ke file</small>
-        </div>
-
-        <button class="backup-btn" onclick="backupData()">
-            ↓ BACKUP DATA
-        </button>
-
-        <div class="backup-divider"></div>
-
-        <div class="backup-info">
-            <strong>Restore Data</strong>
-            <small>Pulihkan data dari file backup</small>
-        </div>
-
-        <button class="restore-btn" onclick="openRestore()">
-            ↑ RESTORE DATA
-        </button>
-
-        <input
-            type="file"
-            id="restoreFile"
-            accept=".json,application/json"
-            onchange="restoreData(event)"
-            hidden
-        >
-
-    </div>
-
-</section>
+    <input
+        type="file"
+        id="restoreFile"
+        accept=".json,application/json"
+        onchange="restoreData(event)"
+        hidden
+    >
+</div>
     
     
 </div>
