@@ -890,12 +890,11 @@ function renderHistory() {
     <div class="history-actions">
 
         <button
-            class="print-btn"
-            onclick="printService(${item.id})"
-            title="Print"
-        >
-            🖨
-        </button>
+    class="print-btn"
+    onclick="printService(${item.id})"
+>
+    PRINT
+</button>
 
         <button
             class="delete-btn"
