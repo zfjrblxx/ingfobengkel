@@ -317,70 +317,199 @@ function saveData() {
 
 
 // ========================================
-// NEXT SERVICE
+// NEXT SERVICE - SETIAP 3 BULAN
 // ========================================
 
 function calculateService() {
 
-    let lastServiceKm = 0;
+    const remainingText =
+        document.getElementById("remainingText");
 
-    if (services.length) {
+    const servicePercent =
+        document.getElementById("servicePercent");
 
-        const sorted =
-            [...services].sort((a, b) => b.km - a.km);
+    const progressBar =
+        document.getElementById("progressBar");
 
-        lastServiceKm = sorted[0].km;
+    const lastServiceText =
+        document.getElementById("lastServiceText");
 
+    const nextServiceText =
+        document.getElementById("nextServiceText");
+
+
+    // Belum pernah servis
+    if (!services.length) {
+
+        remainingText.textContent =
+            "Belum ada riwayat servis";
+
+        servicePercent.textContent =
+            "0%";
+
+        progressBar.style.width =
+            "0%";
+
+        lastServiceText.textContent =
+            "Catat servis pertama";
+
+        nextServiceText.textContent =
+            "-";
+
+        return;
     }
 
-    if (!lastServiceKm) {
 
-        lastServiceKm =
-            Math.floor(
-                vehicle.odometer / vehicle.interval
-            ) * vehicle.interval;
-
-    }
-
-    let nextKm =
-        lastServiceKm + vehicle.interval;
-
-    if (nextKm <= vehicle.odometer) {
-
-        nextKm =
-            vehicle.odometer + vehicle.interval;
-
-    }
-
-    const remaining =
-        nextKm - vehicle.odometer;
-
-    const used =
-        vehicle.interval - remaining;
-
-    let percent =
-        Math.round(
-            (used / vehicle.interval) * 100
+    // Cari servis dengan tanggal terbaru
+    const sorted =
+        [...services].sort(
+            (a, b) =>
+                new Date(b.date) -
+                new Date(a.date)
         );
 
+
+    const lastService =
+        sorted[0];
+
+
+    // Tanggal servis terakhir
+    const lastDate =
+        new Date(
+            lastService.date + "T00:00:00"
+        );
+
+
+    // Next service = +3 bulan
+    const nextDate =
+        new Date(lastDate);
+
+    nextDate.setMonth(
+        nextDate.getMonth() + 3
+    );
+
+
+    // Hari ini
+    const today =
+        new Date();
+
+    today.setHours(0, 0, 0, 0);
+
+
+    // Selisih hari
+    const remainingDays =
+        Math.ceil(
+            (nextDate - today) /
+            86400000
+        );
+
+
+    // Total periode servis
+    const totalDays =
+        Math.max(
+            1,
+            Math.round(
+                (nextDate - lastDate) /
+                86400000
+            )
+        );
+
+
+    // Hari yang sudah berjalan
+    const passedDays =
+        Math.max(
+            0,
+            Math.round(
+                (today - lastDate) /
+                86400000
+            )
+        );
+
+
+    // Progress
+    let percent =
+        Math.round(
+            (passedDays / totalDays) * 100
+        );
+
+
     percent =
-        Math.max(0, Math.min(100, percent));
+        Math.max(
+            0,
+            Math.min(100, percent)
+        );
 
 
-    document.getElementById("remainingText").textContent =
-        formatNumber(remaining) + " km remaining";
+    // =========================
+    // STATUS
+    // =========================
 
-    document.getElementById("servicePercent").textContent =
+    if (remainingDays > 30) {
+
+        remainingText.textContent =
+            remainingDays +
+            " hari lagi";
+
+    }
+
+    else if (remainingDays > 7) {
+
+        remainingText.textContent =
+            remainingDays +
+            " hari lagi";
+
+    }
+
+    else if (remainingDays > 0) {
+
+        remainingText.textContent =
+            "⚠️ " +
+            remainingDays +
+            " hari lagi";
+
+    }
+
+    else if (remainingDays === 0) {
+
+        remainingText.textContent =
+            "🔧 Servis hari ini";
+
+    }
+
+    else {
+
+        remainingText.textContent =
+            "⚠️ Terlambat " +
+            Math.abs(remainingDays) +
+            " hari";
+
+    }
+
+
+    servicePercent.textContent =
         percent + "%";
 
-    document.getElementById("progressBar").style.width =
+
+    progressBar.style.width =
         percent + "%";
 
-    document.getElementById("currentKmText").textContent =
-        formatNumber(vehicle.odometer) + " KM";
 
-    document.getElementById("nextKmText").textContent =
-        "Next " + formatNumber(nextKm) + " KM";
+    lastServiceText.textContent =
+        "Last " +
+        formatDate(lastService.date);
+
+
+    nextServiceText.textContent =
+        "Next " +
+        nextDate.toLocaleDateString(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
 }
 
 
