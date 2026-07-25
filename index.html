@@ -181,7 +181,36 @@
     </section>
 
 
+<!-- =========================
+     FUEL LOG
+========================= -->
 
+<section class="section">
+
+    <div class="section-title">
+        <h2>FUEL LOG</h2>
+    </div>
+
+    <!-- LIST FUEL -->
+    <div
+        class="fuel-history"
+        id="fuelHistory"
+    >
+        <div class="empty">
+            Belum ada catatan bensin.<br>
+            Catat pengisian pertamamu.
+        </div>
+    </div>
+
+
+    <button
+        class="add-service"
+        onclick="openFuel()"
+    >
+        ＋ ADD FUEL
+    </button>
+
+</section>
 
 
     
@@ -296,6 +325,120 @@
 </div>
 
 
+<!-- =========================
+     MODAL ADD FUEL
+========================= -->
+
+<div class="modal" id="fuelModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h2>Add Fuel</h2>
+
+            <button
+                class="close"
+                onclick="closeModal('fuelModal')"
+            >
+                ✕
+            </button>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>DATE</label>
+
+                <input
+                    type="date"
+                    id="fuelDate"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>ODOMETER (KM)</label>
+
+                <input
+                    type="number"
+                    id="fuelKm"
+                    placeholder="13250"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>FUEL TYPE</label>
+
+            <select id="fuelType">
+
+                <option value="Pertalite">
+                    Pertalite
+                </option>
+
+                <option value="Pertamax">
+                    Pertamax
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-row">
+
+            <div class="form-group">
+
+                <label>LITER</label>
+
+                <input
+                    type="number"
+                    id="fuelLiter"
+                    step="0.01"
+                    placeholder="3.8"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>TOTAL COST</label>
+
+                <input
+                    type="number"
+                    id="fuelCost"
+                    placeholder="50000"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="save-btn"
+            onclick="saveFuel()"
+        >
+            SAVE FUEL
+        </button>
+
+    </div>
+
+</div>
+
+
+    
 <!-- MODAL MOTOR -->
 <div class="modal" id="vehicleModal">
 
