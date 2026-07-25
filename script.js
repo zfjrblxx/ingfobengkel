@@ -1840,6 +1840,79 @@ function renderHistory() {
 
 
 // ========================================
+// CALCULATE FUEL LITER
+// ========================================
+
+function calculateFuelLiter() {
+
+    const priceInput =
+        document.getElementById("fuelPrice");
+
+    const costInput =
+        document.getElementById("fuelCost");
+
+    const literInput =
+        document.getElementById("fuelLiter");
+
+
+    if (
+        !priceInput ||
+        !costInput ||
+        !literInput
+    ) {
+        return;
+    }
+
+
+    const price =
+        Number(priceInput.value);
+
+    const cost =
+        Number(costInput.value);
+
+
+    if (
+        !Number.isFinite(price) ||
+        price <= 0 ||
+        !Number.isFinite(cost) ||
+        cost <= 0
+    ) {
+
+        literInput.value = "";
+
+        return;
+    }
+
+
+    const liter =
+        cost / price;
+
+
+    literInput.value =
+        liter.toFixed(2) + " L";
+}
+
+document
+    .getElementById("fuelPrice")
+    ?.addEventListener(
+        "input",
+        calculateFuelLiter
+    );
+
+
+document
+    .getElementById("fuelCost")
+    ?.addEventListener(
+        "input",
+        calculateFuelLiter
+    );
+
+
+
+
+
+
+// ========================================
 // OPEN FUEL
 // ========================================
 
@@ -1918,36 +1991,28 @@ function saveFuel() {
 
     const date =
         document
-            .getElementById(
-                "fuelDate"
-            )
+            .getElementById("fuelDate")
             .value;
 
 
     const type =
         document
-            .getElementById(
-                "fuelType"
-            )
+            .getElementById("fuelType")
             .value;
 
 
     const km =
         Number(
             document
-                .getElementById(
-                    "fuelKm"
-                )
+                .getElementById("fuelKm")
                 .value
         );
 
 
-    const liter =
+    const price =
         Number(
             document
-                .getElementById(
-                    "fuelLiter"
-                )
+                .getElementById("fuelPrice")
                 .value
         );
 
@@ -1955,15 +2020,18 @@ function saveFuel() {
     const cost =
         Number(
             document
-                .getElementById(
-                    "fuelCost"
-                )
+                .getElementById("fuelCost")
                 .value
         );
 
 
+    // Hitung liter otomatis
+    const liter =
+        cost / price;
+
+
     // ====================================
-    // VALIDASI
+    // VALIDASI TANGGAL
     // ====================================
 
     if (
@@ -1979,6 +2047,10 @@ function saveFuel() {
     }
 
 
+    // ====================================
+    // VALIDASI ODOMETER
+    // ====================================
+
     if (
         !Number.isFinite(km) ||
         km < 0 ||
@@ -1993,6 +2065,46 @@ function saveFuel() {
     }
 
 
+    // ====================================
+    // VALIDASI HARGA / LITER
+    // ====================================
+
+    if (
+        !Number.isFinite(price) ||
+        price <= 0 ||
+        price > 999999
+    ) {
+
+        alert(
+            "Harga per liter tidak valid."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // VALIDASI TOTAL COST
+    // ====================================
+
+    if (
+        !Number.isFinite(cost) ||
+        cost <= 0 ||
+        cost > 999999999999
+    ) {
+
+        alert(
+            "Total biaya tidak valid."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // VALIDASI LITER
+    // ====================================
+
     if (
         !Number.isFinite(liter) ||
         liter <= 0 ||
@@ -2001,20 +2113,6 @@ function saveFuel() {
 
         alert(
             "Jumlah liter tidak valid."
-        );
-
-        return;
-    }
-
-
-    if (
-        !Number.isFinite(cost) ||
-        cost < 0 ||
-        cost > 999999999999
-    ) {
-
-        alert(
-            "Total biaya tidak valid."
         );
 
         return;
@@ -2059,7 +2157,7 @@ function saveFuel() {
 
 
     // ====================================
-    // SIMPAN
+    // SIMPAN FUEL LOG
     // ====================================
 
     if (!saveFuelData()) {
@@ -2080,8 +2178,10 @@ function saveFuel() {
         const oldOdometer =
             vehicle.odometer;
 
+
         vehicle.odometer =
             Math.round(km);
+
 
         if (!saveData()) {
 
@@ -2089,7 +2189,6 @@ function saveFuel() {
                 oldOdometer;
 
         }
-
     }
 
 
@@ -2099,20 +2198,38 @@ function saveFuel() {
 
     render();
 
+
     closeModal(
         "fuelModal"
     );
 
 
-    // Bersihkan input
+    // ====================================
+    // RESET FORM
+    // ====================================
+
     document.getElementById(
-        "fuelLiter"
+        "fuelPrice"
     ).value = "";
+
 
     document.getElementById(
         "fuelCost"
     ).value = "";
+
+
+    document.getElementById(
+        "fuelLiter"
+    ).value = "";
 }
+
+
+
+
+    
+
+
+    
 
 
 // ========================================
