@@ -569,11 +569,18 @@ function saveService() {
         ).value.trim();
 
 
-    // ====================================
-    // TANGGAL
-    // ====================================
+// ====================================
+// TANGGAL
+// ====================================
 
-    if (!isValidDate(date)) {
+if (!date) {
+
+    alert("Pilih tanggal servis.");
+
+    return;
+}
+
+if (!isValidDate(date)) {
 
     alert("Tanggal servis tidak valid.");
 
