@@ -647,3 +647,9 @@ button {
     background: #eeeeee;
     margin: 20px 0;
 }
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
