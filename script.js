@@ -428,9 +428,11 @@ function saveVehicle() {
         year || "-";
 
 
-    saveData();
+if (!saveData()) {
+    return;
+}
 
-    render();
+render();
 
     closeModal("vehicleModal");
 }
@@ -483,9 +485,11 @@ function saveOdometer() {
         Math.round(km);
 
 
-    saveData();
+if (!saveData()) {
+    return;
+}
 
-    render();
+render();
 
     closeModal("odometerModal");
 }
@@ -724,9 +728,11 @@ if (!isValidDate(date)) {
     }
 
 
-    saveData();
+if (!saveData()) {
+    return;
+}
 
-    render();
+render();
 
     closeModal("serviceModal");
 }
@@ -751,9 +757,11 @@ function deleteService(id) {
         );
 
 
-    saveData();
+if (!saveData()) {
+    return;
+}
 
-    render();
+render();
 }
 
 
@@ -819,9 +827,11 @@ if (!isValidDate(date)) {
         Math.round(cost);
 
 
-    saveData();
+if (!saveData()) {
+    return;
+}
 
-    render();
+render();
 
     closeModal("taxModal");
 }
@@ -1780,9 +1790,11 @@ item.date !== "" &&
                 backup.tax;
 
 
-            saveData();
+if (!saveData()) {
+    return;
+}
 
-            render();
+render();
 
 
             alert(
