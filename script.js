@@ -2,7 +2,11 @@
 // SAFE LOCAL STORAGE
 // ========================================
 
-function loadStorage(key, fallback) {
+// ========================================
+// SAFE LOCAL STORAGE
+// ========================================
+
+function loadStorage(key, fallback, validator) {
 
     try {
 
@@ -14,13 +18,31 @@ function loadStorage(key, fallback) {
             return fallback;
         }
 
+
         const parsed =
             JSON.parse(stored);
 
-        // JSON null dianggap tidak valid
+
+        // Data null
         if (parsed === null) {
             return fallback;
         }
+
+
+        // Struktur data tidak sesuai
+        if (
+            validator &&
+            !validator(parsed)
+        ) {
+
+            console.warn(
+                "Struktur localStorage tidak valid:",
+                key
+            );
+
+            return fallback;
+        }
+
 
         return parsed;
 
@@ -44,17 +66,153 @@ function loadStorage(key, fallback) {
 // ========================================
 
 const defaultVehicle = {
+
     name: "Honda Vario 160",
+
     plate: "E 1234 XX",
+
     year: "2024",
+
     odometer: 12450
 };
 
 
 const defaultTax = {
+
     date: "",
+
     cost: 0
 };
+
+
+// ========================================
+// VALIDATOR VEHICLE
+// ========================================
+
+function isValidVehicle(data) {
+
+    if (
+        !data ||
+        typeof data !== "object" ||
+        Array.isArray(data)
+    ) {
+        return false;
+    }
+
+
+    return (
+        typeof data.name === "string" &&
+
+        typeof data.plate === "string" &&
+
+        (
+            typeof data.year === "string" ||
+            typeof data.year === "number"
+        ) &&
+
+        typeof data.odometer === "number" &&
+
+        Number.isFinite(data.odometer) &&
+
+        data.odometer >= 0
+    );
+}
+
+
+// ========================================
+// VALIDATOR SERVICE
+// ========================================
+
+function isValidService(item) {
+
+    if (
+        !item ||
+        typeof item !== "object" ||
+        Array.isArray(item)
+    ) {
+        return false;
+    }
+
+
+    return (
+        (
+            typeof item.id === "number" ||
+            typeof item.id === "string"
+        ) &&
+
+        typeof item.date === "string" &&
+
+        typeof item.name === "string" &&
+
+        typeof item.km === "number" &&
+
+        Number.isFinite(item.km) &&
+
+        item.km >= 0 &&
+
+        typeof item.part === "string" &&
+
+        typeof item.workshop === "string" &&
+
+        typeof item.cost === "number" &&
+
+        Number.isFinite(item.cost) &&
+
+        item.cost >= 0 &&
+
+        typeof item.notes === "string"
+    );
+}
+
+
+// ========================================
+// VALIDATOR SERVICES
+// ========================================
+
+function isValidServices(data) {
+
+    if (!Array.isArray(data)) {
+        return false;
+    }
+
+
+    // Batasi jumlah data
+    if (data.length > 5000) {
+        return false;
+    }
+
+
+    return data.every(
+        item => isValidService(item)
+    );
+}
+
+
+// ========================================
+// VALIDATOR TAX
+// ========================================
+
+function isValidTax(data) {
+
+    if (
+        !data ||
+        typeof data !== "object" ||
+        Array.isArray(data)
+    ) {
+        return false;
+    }
+
+
+    return (
+        typeof data.date === "string" &&
+
+        typeof data.cost === "number" &&
+
+        Number.isFinite(data.cost) &&
+
+        data.cost >= 0
+    );
+}
 
 
 // ========================================
@@ -64,21 +222,24 @@ const defaultTax = {
 let vehicle =
     loadStorage(
         "garageVehicle",
-        { ...defaultVehicle }
+        { ...defaultVehicle },
+        isValidVehicle
     );
 
 
 let services =
     loadStorage(
         "garageServices",
-        []
+        [],
+        isValidServices
     );
 
 
 let tax =
     loadStorage(
         "garageTax",
-        { ...defaultTax }
+        { ...defaultTax },
+        isValidTax
     );
 
 
