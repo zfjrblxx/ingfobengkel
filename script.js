@@ -1,4 +1,3 @@
-
 // ========================================
 // DATA
 // ========================================
@@ -7,8 +6,7 @@ let vehicle = JSON.parse(localStorage.getItem("garageVehicle")) || {
     name: "Honda Vario 160",
     plate: "E 1234 XX",
     year: "2024",
-    odometer: 12450,
-    interval: 2000
+    odometer: 12450
 };
 
 let services =
@@ -48,130 +46,8 @@ function formatDate(date) {
 
 
 // ========================================
-// MODAL
+// TODAY
 // ========================================
-
-function showModal(id) {
-    document.getElementById(id).classList.add("show");
-}
-
-function closeModal(id) {
-    document.getElementById(id).classList.remove("show");
-}
-
-document.querySelectorAll(".modal").forEach(modal => {
-
-    modal.addEventListener("click", function(e) {
-
-        if (e.target === modal) {
-            modal.classList.remove("show");
-        }
-
-    });
-
-});
-
-
-// ========================================
-// VEHICLE
-// ========================================
-
-function openVehicle() {
-
-    document.getElementById("inputVehicleName").value =
-        vehicle.name;
-
-    document.getElementById("inputPlate").value =
-        vehicle.plate;
-
-    document.getElementById("inputYear").value =
-        vehicle.year;
-
-    document.getElementById("serviceInterval").value =
-        vehicle.interval;
-
-    showModal("vehicleModal");
-}
-
-
-function saveVehicle() {
-
-    vehicle.name =
-        document.getElementById("inputVehicleName").value ||
-        "My Motorcycle";
-
-    vehicle.plate =
-        document.getElementById("inputPlate").value ||
-        "-";
-
-    vehicle.year =
-        document.getElementById("inputYear").value ||
-        "-";
-
-    vehicle.interval =
-        Number(document.getElementById("serviceInterval").value) ||
-        2000;
-
-    saveData();
-    render();
-
-    closeModal("vehicleModal");
-}
-
-
-// ========================================
-// ODOMETER
-// ========================================
-
-function openOdometer() {
-
-    document.getElementById("inputOdometer").value =
-        vehicle.odometer;
-
-    showModal("odometerModal");
-}
-
-
-function saveOdometer() {
-
-    const km =
-        Number(document.getElementById("inputOdometer").value);
-
-    if (!km) {
-        alert("Masukkan kilometer.");
-        return;
-    }
-
-    vehicle.odometer = km;
-
-    saveData();
-    render();
-
-    closeModal("odometerModal");
-}
-
-
-// ========================================
-// SERVICE
-// ========================================
-
-function openService() {
-
-    document.getElementById("serviceDate").value =
-        getToday();
-
-    document.getElementById("serviceKm").value =
-        vehicle.odometer;
-
-    document.getElementById("serviceName").value = "";
-    document.getElementById("servicePart").value = "";
-    document.getElementById("serviceWorkshop").value = "";
-    document.getElementById("serviceCost").value = "";
-    document.getElementById("serviceNotes").value = "";
-
-    showModal("serviceModal");
-}
-
 
 function getToday() {
 
@@ -189,23 +65,184 @@ function getToday() {
 }
 
 
+// ========================================
+// MODAL
+// ========================================
+
+function showModal(id) {
+
+    const modal = document.getElementById(id);
+
+    if (modal) {
+        modal.classList.add("show");
+    }
+}
+
+
+function closeModal(id) {
+
+    const modal = document.getElementById(id);
+
+    if (modal) {
+        modal.classList.remove("show");
+    }
+}
+
+
+// Tutup modal ketika klik area luar
+document.querySelectorAll(".modal").forEach(modal => {
+
+    modal.addEventListener("click", function (e) {
+
+        if (e.target === modal) {
+            modal.classList.remove("show");
+        }
+
+    });
+
+});
+
+
+// ========================================
+// VEHICLE
+// ========================================
+
+function openVehicle() {
+
+    document.getElementById("inputVehicleName").value =
+        vehicle.name || "";
+
+    document.getElementById("inputPlate").value =
+        vehicle.plate || "";
+
+    document.getElementById("inputYear").value =
+        vehicle.year || "";
+
+    showModal("vehicleModal");
+}
+
+
+function saveVehicle() {
+
+    vehicle.name =
+        document.getElementById("inputVehicleName").value.trim()
+        || "My Motorcycle";
+
+    vehicle.plate =
+        document.getElementById("inputPlate").value.trim()
+        || "-";
+
+    vehicle.year =
+        document.getElementById("inputYear").value
+        || "-";
+
+    saveData();
+
+    render();
+
+    closeModal("vehicleModal");
+}
+
+
+// ========================================
+// ODOMETER
+// ========================================
+
+function openOdometer() {
+
+    document.getElementById("inputOdometer").value =
+        vehicle.odometer || "";
+
+    showModal("odometerModal");
+}
+
+
+function saveOdometer() {
+
+    const km =
+        Number(
+            document.getElementById("inputOdometer").value
+        );
+
+    if (km < 0 || isNaN(km)) {
+
+        alert("Masukkan kilometer yang valid.");
+
+        return;
+    }
+
+    vehicle.odometer = km;
+
+    saveData();
+
+    render();
+
+    closeModal("odometerModal");
+}
+
+
+// ========================================
+// OPEN SERVICE
+// ========================================
+
+function openService() {
+
+    document.getElementById("serviceDate").value =
+        getToday();
+
+    document.getElementById("serviceKm").value =
+        vehicle.odometer || "";
+
+    document.getElementById("serviceName").value = "";
+
+    document.getElementById("servicePart").value = "";
+
+    document.getElementById("serviceWorkshop").value = "";
+
+    document.getElementById("serviceCost").value = "";
+
+    document.getElementById("serviceNotes").value = "";
+
+    showModal("serviceModal");
+}
+
+
+// ========================================
+// SAVE SERVICE
+// ========================================
+
 function saveService() {
 
     const date =
         document.getElementById("serviceDate").value;
 
     const name =
-        document.getElementById("serviceName").value.trim();
+        document
+            .getElementById("serviceName")
+            .value
+            .trim();
+
+    const km =
+        Number(
+            document.getElementById("serviceKm").value
+        );
+
 
     if (!date) {
+
         alert("Pilih tanggal servis.");
+
         return;
     }
 
+
     if (!name) {
+
         alert("Masukkan jenis servis.");
+
         return;
     }
+
 
     const item = {
 
@@ -214,50 +251,79 @@ function saveService() {
         date: date,
 
         km:
-            Number(document.getElementById("serviceKm").value) ||
-            vehicle.odometer,
+            !isNaN(km) && km >= 0
+                ? km
+                : vehicle.odometer,
 
         name: name,
 
         part:
-            document.getElementById("servicePart").value.trim(),
+            document
+                .getElementById("servicePart")
+                .value
+                .trim(),
 
         workshop:
-            document.getElementById("serviceWorkshop").value.trim(),
+            document
+                .getElementById("serviceWorkshop")
+                .value
+                .trim(),
 
         cost:
-            Number(document.getElementById("serviceCost").value) ||
-            0,
+            Number(
+                document.getElementById("serviceCost").value
+            ) || 0,
 
         notes:
-            document.getElementById("serviceNotes").value.trim()
+            document
+                .getElementById("serviceNotes")
+                .value
+                .trim()
 
     };
 
-    services.unshift(item);
 
+    services.push(item);
+
+
+    // Update odometer jika KM servis lebih tinggi
     if (item.km > vehicle.odometer) {
-        vehicle.odometer = item.km;
+
+        vehicle.odometer =
+            item.km;
+
     }
 
+
     saveData();
+
     render();
 
     closeModal("serviceModal");
 }
 
 
+// ========================================
+// DELETE SERVICE
+// ========================================
+
 function deleteService(id) {
 
     const confirmDelete =
         confirm("Hapus riwayat servis ini?");
 
+
     if (!confirmDelete) return;
 
+
     services =
-        services.filter(item => item.id !== id);
+        services.filter(
+            item => item.id !== id
+        );
+
 
     saveData();
+
     render();
 }
 
@@ -284,9 +350,13 @@ function saveTax() {
         document.getElementById("taxDate").value;
 
     tax.cost =
-        Number(document.getElementById("taxCost").value) || 0;
+        Number(
+            document.getElementById("taxCost").value
+        ) || 0;
+
 
     saveData();
+
     render();
 
     closeModal("taxModal");
@@ -294,7 +364,7 @@ function saveTax() {
 
 
 // ========================================
-// LOCAL STORAGE
+// SAVE LOCAL STORAGE
 // ========================================
 
 function saveData() {
@@ -304,10 +374,12 @@ function saveData() {
         JSON.stringify(vehicle)
     );
 
+
     localStorage.setItem(
         "garageServices",
         JSON.stringify(services)
     );
+
 
     localStorage.setItem(
         "garageTax",
@@ -317,7 +389,8 @@ function saveData() {
 
 
 // ========================================
-// NEXT SERVICE - SETIAP 3 BULAN
+// NEXT SERVICE
+// PATOKAN: 3 BULAN
 // ========================================
 
 function calculateService() {
@@ -337,35 +410,59 @@ function calculateService() {
     const nextServiceText =
         document.getElementById("nextServiceText");
 
+    const overviewNextService =
+        document.getElementById("overviewNextService");
 
-    // Belum pernah servis
+
+    // ====================================
+    // BELUM ADA SERVICE
+    // ====================================
+
     if (!services.length) {
 
-        remainingText.textContent =
-            "Belum ada riwayat servis";
+        if (remainingText) {
+            remainingText.textContent =
+                "Belum ada riwayat servis";
+        }
 
-        servicePercent.textContent =
-            "0%";
+        if (servicePercent) {
+            servicePercent.textContent =
+                "0%";
+        }
 
-        progressBar.style.width =
-            "0%";
+        if (progressBar) {
+            progressBar.style.width =
+                "0%";
+        }
 
-        lastServiceText.textContent =
-            "Catat servis pertama";
+        if (lastServiceText) {
+            lastServiceText.textContent =
+                "Catat servis pertama";
+        }
 
-        nextServiceText.textContent =
-            "-";
+        if (nextServiceText) {
+            nextServiceText.textContent =
+                "-";
+        }
+
+        if (overviewNextService) {
+            overviewNextService.textContent =
+                "-";
+        }
 
         return;
     }
 
 
-    // Cari servis dengan tanggal terbaru
+    // ====================================
+    // CARI SERVICE TERBARU
+    // ====================================
+
     const sorted =
         [...services].sort(
             (a, b) =>
-                new Date(b.date) -
-                new Date(a.date)
+                new Date(b.date + "T00:00:00") -
+                new Date(a.date + "T00:00:00")
         );
 
 
@@ -373,134 +470,197 @@ function calculateService() {
         sorted[0];
 
 
-    // Tanggal servis terakhir
+    // ====================================
+    // TANGGAL SERVICE TERAKHIR
+    // ====================================
+
     const lastDate =
         new Date(
-            lastService.date + "T00:00:00"
+            lastService.date +
+            "T00:00:00"
         );
 
 
-    // Next service = +3 bulan
+    // ====================================
+    // NEXT SERVICE + 3 BULAN
+    // ====================================
+
     const nextDate =
         new Date(lastDate);
+
 
     nextDate.setMonth(
         nextDate.getMonth() + 3
     );
 
 
-    // Hari ini
+    // ====================================
+    // HARI INI
+    // ====================================
+
     const today =
         new Date();
 
-    today.setHours(0, 0, 0, 0);
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
 
-    // Selisih hari
+    // ====================================
+    // HITUNG SISA HARI
+    // ====================================
+
     const remainingDays =
         Math.ceil(
-            (nextDate - today) /
+            (
+                nextDate -
+                today
+            ) /
             86400000
         );
 
 
-    // Total periode servis
+    // ====================================
+    // TOTAL HARI 3 BULAN
+    // ====================================
+
     const totalDays =
         Math.max(
             1,
             Math.round(
-                (nextDate - lastDate) /
+                (
+                    nextDate -
+                    lastDate
+                ) /
                 86400000
             )
         );
 
 
-    // Hari yang sudah berjalan
+    // ====================================
+    // HARI SUDAH BERJALAN
+    // ====================================
+
     const passedDays =
         Math.max(
             0,
             Math.round(
-                (today - lastDate) /
+                (
+                    today -
+                    lastDate
+                ) /
                 86400000
             )
         );
 
 
-    // Progress
+    // ====================================
+    // PROGRESS %
+    // ====================================
+
     let percent =
         Math.round(
-            (passedDays / totalDays) * 100
+            (
+                passedDays /
+                totalDays
+            ) * 100
         );
 
 
     percent =
         Math.max(
             0,
-            Math.min(100, percent)
+            Math.min(
+                100,
+                percent
+            )
         );
 
 
-    // =========================
+    // ====================================
     // STATUS
-    // =========================
+    // ====================================
 
-    if (remainingDays > 30) {
+    if (remainingText) {
 
-        remainingText.textContent =
-            remainingDays +
-            " hari lagi";
+        if (remainingDays > 7) {
 
-    }
+            remainingText.textContent =
+                remainingDays +
+                " hari lagi";
 
-    else if (remainingDays > 7) {
+        }
 
-        remainingText.textContent =
-            remainingDays +
-            " hari lagi";
+        else if (remainingDays > 0) {
 
-    }
+            remainingText.textContent =
+                "⚠️ " +
+                remainingDays +
+                " hari lagi";
 
-    else if (remainingDays > 0) {
+        }
 
-        remainingText.textContent =
-            "⚠️ " +
-            remainingDays +
-            " hari lagi";
+        else if (remainingDays === 0) {
 
-    }
+            remainingText.textContent =
+                "🔧 Servis hari ini";
 
-    else if (remainingDays === 0) {
+        }
 
-        remainingText.textContent =
-            "🔧 Servis hari ini";
+        else {
 
-    }
+            remainingText.textContent =
+                "⚠️ Terlambat " +
+                Math.abs(remainingDays) +
+                " hari";
 
-    else {
-
-        remainingText.textContent =
-            "⚠️ Terlambat " +
-            Math.abs(remainingDays) +
-            " hari";
+        }
 
     }
 
 
-    servicePercent.textContent =
-        percent + "%";
+    // ====================================
+    // PROGRESS
+    // ====================================
+
+    if (servicePercent) {
+
+        servicePercent.textContent =
+            percent + "%";
+
+    }
 
 
-    progressBar.style.width =
-        percent + "%";
+    if (progressBar) {
+
+        progressBar.style.width =
+            percent + "%";
+
+    }
 
 
-    lastServiceText.textContent =
-        "Last " +
-        formatDate(lastService.date);
+    // ====================================
+    // LAST SERVICE
+    // ====================================
+
+    if (lastServiceText) {
+
+        lastServiceText.textContent =
+            "Last " +
+            formatDate(lastService.date);
+
+    }
 
 
-    nextServiceText.textContent =
-        "Next " +
+    // ====================================
+    // NEXT SERVICE
+    // ====================================
+
+    const formattedNextDate =
         nextDate.toLocaleDateString(
             "id-ID",
             {
@@ -510,6 +670,26 @@ function calculateService() {
             }
         );
 
+
+    if (nextServiceText) {
+
+        nextServiceText.textContent =
+            "Next " +
+            formattedNextDate;
+
+    }
+
+
+    // ====================================
+    // OVERVIEW NEXT SERVICE
+    // ====================================
+
+    if (overviewNextService) {
+
+        overviewNextService.textContent =
+            formattedNextDate;
+
+    }
 }
 
 
@@ -526,10 +706,18 @@ function renderTax() {
         document.getElementById("taxDays");
 
 
+    if (!taxDateText || !taxDays) {
+        return;
+    }
+
+
     if (!tax.date) {
 
-        taxDateText.textContent = "Not set";
-        taxDays.textContent = "";
+        taxDateText.textContent =
+            "Not set";
+
+        taxDays.textContent =
+            "";
 
         return;
     }
@@ -539,25 +727,40 @@ function renderTax() {
         formatDate(tax.date);
 
 
-    const today = new Date();
+    const today =
+        new Date();
 
-    today.setHours(0, 0, 0, 0);
+
+    today.setHours(
+        0,
+        0,
+        0,
+        0
+    );
 
 
     const due =
-        new Date(tax.date + "T00:00:00");
+        new Date(
+            tax.date +
+            "T00:00:00"
+        );
 
 
     const difference =
         Math.ceil(
-            (due - today) / 86400000
+            (
+                due -
+                today
+            ) /
+            86400000
         );
 
 
     if (difference > 0) {
 
         taxDays.textContent =
-            difference + " days";
+            difference +
+            " days";
 
     }
 
@@ -579,7 +782,7 @@ function renderTax() {
 
 
 // ========================================
-// HISTORY
+// SERVICE HISTORY
 // ========================================
 
 function renderHistory() {
@@ -588,6 +791,10 @@ function renderHistory() {
         document.getElementById("history");
 
 
+    if (!container) return;
+
+
+    // Belum ada service
     if (!services.length) {
 
         container.innerHTML = `
@@ -601,86 +808,93 @@ function renderHistory() {
     }
 
 
+    // Urutkan berdasarkan tanggal terbaru
     const sortedServices =
-        [...services].sort((a, b) => {
-
-            return new Date(b.date) -
-                   new Date(a.date);
-
-        });
+        [...services].sort(
+            (a, b) =>
+                new Date(b.date + "T00:00:00") -
+                new Date(a.date + "T00:00:00")
+        );
 
 
     container.innerHTML =
-        sortedServices.map(item => `
+        sortedServices
+            .map(item => `
 
-            <div class="history-card">
+                <div class="history-card">
 
-                <div class="history-date">
-                    ${formatDate(item.date)}
-                </div>
-
-                <div class="history-title">
-                    ${escapeHTML(item.name)}
-                </div>
-
-                <div class="history-detail">
-
-                    ${formatNumber(item.km)} KM
-
-                    ${
-                        item.workshop
-                        ? " • " + escapeHTML(item.workshop)
-                        : ""
-                    }
-
-                </div>
-
-
-                ${
-                    item.part
-                    ? `
-                        <div class="history-detail">
-                            Spare part:
-                            ${escapeHTML(item.part)}
-                        </div>
-                    `
-                    : ""
-                }
-
-
-                ${
-                    item.notes
-                    ? `
-                        <div class="history-detail">
-                            ${escapeHTML(item.notes)}
-                        </div>
-                    `
-                    : ""
-                }
-
-
-                <div class="history-bottom">
-
-                    <div class="history-cost">
-                        ${formatRupiah(item.cost)}
+                    <div class="history-date">
+                        ${formatDate(item.date)}
                     </div>
 
-                    <button
-                        class="delete-btn"
-                        onclick="deleteService(${item.id})">
-                        DELETE
-                    </button>
+
+                    <div class="history-title">
+                        ${escapeHTML(item.name)}
+                    </div>
+
+
+                    <div class="history-detail">
+
+                        ${formatNumber(item.km)} KM
+
+                        ${
+                            item.workshop
+                                ? " • " +
+                                  escapeHTML(item.workshop)
+                                : ""
+                        }
+
+                    </div>
+
+
+                    ${
+                        item.part
+                            ? `
+                                <div class="history-detail">
+                                    Spare part:
+                                    ${escapeHTML(item.part)}
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    ${
+                        item.notes
+                            ? `
+                                <div class="history-detail">
+                                    ${escapeHTML(item.notes)}
+                                </div>
+                            `
+                            : ""
+                    }
+
+
+                    <div class="history-bottom">
+
+                        <div class="history-cost">
+                            ${formatRupiah(item.cost)}
+                        </div>
+
+
+                        <button
+                            class="delete-btn"
+                            onclick="deleteService(${item.id})"
+                        >
+                            DELETE
+                        </button>
+
+                    </div>
 
                 </div>
 
-            </div>
-
-        `).join("");
+            `)
+            .join("");
 }
 
 
 // ========================================
-// SECURITY
+// ESCAPE HTML
 // ========================================
 
 function escapeHTML(value) {
@@ -688,61 +902,14 @@ function escapeHTML(value) {
     const div =
         document.createElement("div");
 
+
     div.textContent =
         String(value || "");
+
 
     return div.innerHTML;
 }
 
-
-// ========================================
-// RENDER
-// ========================================
-
-function render() {
-
-    document.getElementById("vehicleName").textContent =
-        vehicle.name;
-
-    document.getElementById("vehiclePlate").textContent =
-        vehicle.plate;
-
-    document.getElementById("vehicleYear").textContent =
-        vehicle.year;
-
-    document.getElementById("odometer").textContent =
-        formatNumber(vehicle.odometer);
-
-
-    document.getElementById("totalService").textContent =
-        services.length;
-
-
-    const total =
-        services.reduce(
-            (sum, item) =>
-                sum + Number(item.cost || 0),
-            0
-        );
-
-
-    document.getElementById("totalCost").textContent =
-        formatRupiah(total);
-
-
-    calculateService();
-
-    renderHistory();
-
-    renderTax();
-}
-
-
-// ========================================
-// START
-// ========================================
-
-render();
 
 // ========================================
 // BACKUP DATA
@@ -751,45 +918,72 @@ render();
 function backupData() {
 
     const backup = {
+
         version: 1,
-        createdAt: new Date().toISOString(),
-        vehicle: vehicle,
-        services: services,
-        tax: tax
+
+        createdAt:
+            new Date().toISOString(),
+
+        vehicle:
+            vehicle,
+
+        services:
+            services,
+
+        tax:
+            tax
+
     };
 
+
     const json =
-        JSON.stringify(backup, null, 2);
+        JSON.stringify(
+            backup,
+            null,
+            2
+        );
+
 
     const blob =
         new Blob(
             [json],
-            { type: "application/json" }
+            {
+                type:
+                    "application/json"
+            }
         );
+
 
     const url =
         URL.createObjectURL(blob);
 
+
     const link =
         document.createElement("a");
 
-    const date =
-        new Date()
-        .toISOString()
-        .split("T")[0];
 
-    link.href = url;
+    const date =
+        getToday();
+
+
+    link.href =
+        url;
+
 
     link.download =
         "my-garage-backup-" +
         date +
         ".json";
 
+
     document.body.appendChild(link);
+
 
     link.click();
 
+
     document.body.removeChild(link);
+
 
     URL.revokeObjectURL(url);
 }
@@ -801,9 +995,17 @@ function backupData() {
 
 function openRestore() {
 
-    document
-        .getElementById("restoreFile")
-        .click();
+    const restoreFile =
+        document.getElementById(
+            "restoreFile"
+        );
+
+
+    if (restoreFile) {
+
+        restoreFile.click();
+
+    }
 }
 
 
@@ -816,6 +1018,7 @@ function restoreData(event) {
     const file =
         event.target.files[0];
 
+
     if (!file) return;
 
 
@@ -823,84 +1026,184 @@ function restoreData(event) {
         new FileReader();
 
 
-    reader.onload = function(e) {
+    reader.onload =
+        function (e) {
 
-        try {
+            try {
 
-            const backup =
-                JSON.parse(e.target.result);
+                const backup =
+                    JSON.parse(
+                        e.target.result
+                    );
 
 
-            // Cek file backup
-            if (
-                !backup.vehicle ||
-                !Array.isArray(backup.services) ||
-                !backup.tax
-            ) {
+                // Validasi backup
+                if (
+                    !backup.vehicle ||
+                    !Array.isArray(
+                        backup.services
+                    ) ||
+                    !backup.tax
+                ) {
+
+                    alert(
+                        "File backup tidak valid."
+                    );
+
+                    event.target.value =
+                        "";
+
+                    return;
+                }
+
+
+                const confirmRestore =
+                    confirm(
+                        "Restore data ini?\n\n" +
+                        "Data My Garage saat ini akan diganti."
+                    );
+
+
+                if (!confirmRestore) {
+
+                    event.target.value =
+                        "";
+
+                    return;
+                }
+
+
+                // Restore
+                vehicle =
+                    backup.vehicle;
+
+
+                services =
+                    backup.services;
+
+
+                tax =
+                    backup.tax;
+
+
+                saveData();
+
+
+                render();
+
 
                 alert(
-                    "File backup tidak valid."
+                    "Data berhasil dipulihkan!"
                 );
 
-                return;
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+
+                alert(
+                    "File tidak dapat dibaca."
+                );
+
             }
 
 
-            const confirmRestore =
-                confirm(
-                    "Restore data ini?\n\n" +
-                    "Data My Garage saat ini akan diganti dengan data dari backup."
-                );
+            event.target.value =
+                "";
 
-
-            if (!confirmRestore) {
-
-                event.target.value = "";
-
-                return;
-            }
-
-
-            // Ganti data
-            vehicle = backup.vehicle;
-
-            services = backup.services;
-
-            tax = backup.tax;
-
-
-            // Simpan ke localStorage
-            saveData();
-
-
-            // Update tampilan
-            render();
-
-
-            alert(
-                "Data berhasil dipulihkan!"
-            );
-
-
-        }
-
-        catch (error) {
-
-            console.error(error);
-
-            alert(
-                "File tidak dapat dibaca. Pastikan kamu memilih file backup My Garage."
-            );
-
-        }
-
-
-        // Supaya file yang sama bisa dipilih lagi
-        event.target.value = "";
-
-    };
+        };
 
 
     reader.readAsText(file);
-
 }
+
+
+// ========================================
+// RENDER
+// ========================================
+
+function render() {
+
+    // Vehicle
+    const vehicleName =
+        document.getElementById("vehicleName");
+
+    const vehiclePlate =
+        document.getElementById("vehiclePlate");
+
+    const vehicleYear =
+        document.getElementById("vehicleYear");
+
+    const odometer =
+        document.getElementById("odometer");
+
+
+    if (vehicleName) {
+
+        vehicleName.textContent =
+            vehicle.name;
+
+    }
+
+
+    if (vehiclePlate) {
+
+        vehiclePlate.textContent =
+            vehicle.plate;
+
+    }
+
+
+    if (vehicleYear) {
+
+        vehicleYear.textContent =
+            vehicle.year;
+
+    }
+
+
+    if (odometer) {
+
+        odometer.textContent =
+            formatNumber(
+                vehicle.odometer
+            );
+
+    }
+
+
+    // Total Service
+    const totalService =
+        document.getElementById(
+            "totalService"
+        );
+
+
+    if (totalService) {
+
+        totalService.textContent =
+            services.length;
+
+    }
+
+
+    // Next Service
+    calculateService();
+
+
+    // History
+    renderHistory();
+
+
+    // Pajak
+    renderTax();
+}
+
+
+// ========================================
+// START
+// ========================================
+
+render();
