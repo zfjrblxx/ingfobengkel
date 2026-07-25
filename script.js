@@ -2355,12 +2355,10 @@ function renderFuelHistory() {
         [...fuelLogs].sort(
             (a, b) =>
                 new Date(
-                    b.date +
-                    "T00:00:00"
+                    b.date + "T00:00:00"
                 ) -
                 new Date(
-                    a.date +
-                    "T00:00:00"
+                    a.date + "T00:00:00"
                 )
         );
 
@@ -2371,8 +2369,7 @@ function renderFuelHistory() {
 
                 const pricePerLiter =
                     item.liter > 0
-                        ? item.cost /
-                          item.liter
+                        ? item.cost / item.liter
                         : 0;
 
 
@@ -2414,13 +2411,9 @@ function renderFuelHistory() {
                                 HARGA / LITER
 
                                 <strong>
-                                    ${
-                                        formatRupiah(
-                                            Math.round(
-                                                pricePerLiter
-                                            )
-                                        )
-                                    }
+                                    ${formatRupiah(
+                                        Math.round(pricePerLiter)
+                                    )}
                                 </strong>
                             </div>
 
@@ -2436,21 +2429,22 @@ function renderFuelHistory() {
 
                             <div class="history-actions">
 
-    <button
-        class="print-btn"
-        onclick="printFuel(${item.id})"
-    >
-        PRINT
-    </button>
+                                <button
+                                    class="print-btn"
+                                    onclick="printFuel(${item.id})"
+                                >
+                                    PRINT
+                                </button>
 
-    <button
-        class="fuel-delete-btn"
-        onclick="deleteFuel(${item.id})"
-    >
-        DELETE
-    </button>
 
-</div>
+                                <button
+                                    class="fuel-delete-btn"
+                                    onclick="deleteFuel(${item.id})"
+                                >
+                                    DELETE
+                                </button>
+
+                            </div>
 
                         </div>
 
