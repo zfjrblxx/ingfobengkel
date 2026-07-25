@@ -653,3 +653,39 @@ button {
     align-items: center;
     gap: 7px;
 }
+
+/* BACKUP, RESTORE & SETTINGS */
+
+.data-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.data-action {
+    width: 64px;
+    border: none;
+    background: #fff;
+    border-radius: 15px;
+    padding: 9px 5px 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+}
+
+.data-icon {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.data-title {
+    font-size: 9px;
+    font-weight: 600;
+    color: #777;
+}
