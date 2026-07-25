@@ -883,19 +883,30 @@ function renderHistory() {
 
                     <div class="history-bottom">
 
-                        <div class="history-cost">
-                            ${formatRupiah(item.cost)}
-                        </div>
+    <div class="history-cost">
+        ${formatRupiah(item.cost)}
+    </div>
 
+    <div class="history-actions">
 
-                        <button
-                            class="delete-btn"
-                            onclick="deleteService(${item.id})"
-                        >
-                            DELETE
-                        </button>
+        <button
+            class="print-btn"
+            onclick="printService(${item.id})"
+            title="Print"
+        >
+            🖨
+        </button>
 
-                    </div>
+        <button
+            class="delete-btn"
+            onclick="deleteService(${item.id})"
+        >
+            DELETE
+        </button>
+
+    </div>
+
+</div>
 
                 </div>
 
