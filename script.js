@@ -1649,11 +1649,49 @@ function printCurrentService() {
 // SAVE IMAGE
 // ========================================
 
-function saveServiceImage() {
+async function saveServiceImage() {
 
-    alert(
-        "Fitur Save Image kita pasang berikutnya."
-    );
+    const receipt =
+        document.getElementById("serviceReceipt");
+
+    if (!receipt) {
+        alert("Receipt tidak ditemukan.");
+        return;
+    }
+
+    try {
+
+        const canvas = await html2canvas(receipt, {
+            scale: 3,
+            backgroundColor: "#ffffff",
+            useCORS: true
+        });
+
+        const link =
+            document.createElement("a");
+
+        const date =
+            currentPrintService
+                ? currentPrintService.date
+                : getToday();
+
+        link.download =
+            `ingfo-bengkel-${date}.png`;
+
+        link.href =
+            canvas.toDataURL("image/png");
+
+        link.click();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        alert("Gagal menyimpan gambar.");
+
+    }
 }
 
 
