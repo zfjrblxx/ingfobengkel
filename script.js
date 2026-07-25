@@ -1,22 +1,85 @@
 // ========================================
-// DATA
+// SAFE LOCAL STORAGE
 // ========================================
 
-let vehicle = JSON.parse(localStorage.getItem("garageVehicle")) || {
+function loadStorage(key, fallback) {
+
+    try {
+
+        const stored =
+            localStorage.getItem(key);
+
+        // Belum ada data
+        if (stored === null) {
+            return fallback;
+        }
+
+        const parsed =
+            JSON.parse(stored);
+
+        // JSON null dianggap tidak valid
+        if (parsed === null) {
+            return fallback;
+        }
+
+        return parsed;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal membaca localStorage:",
+            key,
+            error
+        );
+
+        return fallback;
+    }
+}
+
+
+// ========================================
+// DEFAULT DATA
+// ========================================
+
+const defaultVehicle = {
     name: "Honda Vario 160",
     plate: "E 1234 XX",
     year: "2024",
     odometer: 12450
 };
 
+
+const defaultTax = {
+    date: "",
+    cost: 0
+};
+
+
+// ========================================
+// LOAD DATA
+// ========================================
+
+let vehicle =
+    loadStorage(
+        "garageVehicle",
+        { ...defaultVehicle }
+    );
+
+
 let services =
-    JSON.parse(localStorage.getItem("garageServices")) || [];
+    loadStorage(
+        "garageServices",
+        []
+    );
+
 
 let tax =
-    JSON.parse(localStorage.getItem("garageTax")) || {
-        date: "",
-        cost: 0
-    };
+    loadStorage(
+        "garageTax",
+        { ...defaultTax }
+    );
 
 
 // ========================================
