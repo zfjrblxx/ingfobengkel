@@ -1031,110 +1031,297 @@ function openRestore() {
 
 
 // ========================================
-// RESTORE DATA
+// RESTORE DATA - SECURE
 // ========================================
 
 function restoreData(event) {
 
-    const file =
-        event.target.files[0];
-
+    const file = event.target.files[0];
 
     if (!file) return;
 
+
+    // ====================================
+    // CEK TIPE FILE
+    // ====================================
+
+    if (
+        file.type &&
+        file.type !== "application/json"
+    ) {
+
+        alert("File harus berformat JSON.");
+
+        event.target.value = "";
+
+        return;
+    }
+
+
+    // ====================================
+    // BATASI UKURAN FILE - MAX 2 MB
+    // ====================================
+
+    const maxSize =
+        2 * 1024 * 1024;
+
+
+    if (file.size > maxSize) {
+
+        alert("File backup terlalu besar. Maksimal 2 MB.");
+
+        event.target.value = "";
+
+        return;
+    }
+
+
+    // ====================================
+    // BACA FILE
+    // ====================================
 
     const reader =
         new FileReader();
 
 
-    reader.onload =
-        function (e) {
+    reader.onload = function (e) {
 
-            try {
+        try {
 
-                const backup =
-                    JSON.parse(
-                        e.target.result
-                    );
+            const backup =
+                JSON.parse(e.target.result);
 
 
-                // Validasi backup
-                if (
-                    !backup.vehicle ||
-                    !Array.isArray(
-                        backup.services
-                    ) ||
-                    !backup.tax
-                ) {
+            // ====================================
+            // VALIDASI STRUKTUR UTAMA
+            // ====================================
 
-                    alert(
-                        "File backup tidak valid."
-                    );
+            if (
+                !backup ||
+                typeof backup !== "object" ||
+                Array.isArray(backup)
+            ) {
 
-                    event.target.value =
-                        "";
-
-                    return;
-                }
-
-
-                const confirmRestore =
-                    confirm(
-                        "Restore data ini?\n\n" +
-                        "Data My Garage saat ini akan diganti."
-                    );
-
-
-                if (!confirmRestore) {
-
-                    event.target.value =
-                        "";
-
-                    return;
-                }
-
-
-                // Restore
-                vehicle =
-                    backup.vehicle;
-
-
-                services =
-                    backup.services;
-
-
-                tax =
-                    backup.tax;
-
-
-                saveData();
-
-
-                render();
-
-
-                alert(
-                    "Data berhasil dipulihkan!"
+                throw new Error(
+                    "Struktur backup tidak valid."
                 );
-
-            }
-
-            catch (error) {
-
-                console.error(error);
-
-
-                alert(
-                    "File tidak dapat dibaca."
-                );
-
             }
 
 
-            event.target.value =
-                "";
+            // ====================================
+            // VALIDASI VEHICLE
+            // ====================================
 
-        };
+            if (
+                !backup.vehicle ||
+                typeof backup.vehicle !== "object" ||
+                Array.isArray(backup.vehicle)
+            ) {
+
+                throw new Error(
+                    "Data kendaraan tidak valid."
+                );
+            }
+
+
+            if (
+                typeof backup.vehicle.name !== "string" ||
+                typeof backup.vehicle.plate !== "string" ||
+                (
+                    typeof backup.vehicle.year !== "string" &&
+                    typeof backup.vehicle.year !== "number"
+                ) ||
+                typeof backup.vehicle.odometer !== "number" ||
+                !Number.isFinite(backup.vehicle.odometer) ||
+                backup.vehicle.odometer < 0
+            ) {
+
+                throw new Error(
+                    "Data kendaraan rusak atau tidak valid."
+                );
+            }
+
+
+            // ====================================
+            // VALIDASI SERVICES
+            // ====================================
+
+            if (!Array.isArray(backup.services)) {
+
+                throw new Error(
+                    "Riwayat servis tidak valid."
+                );
+            }
+
+
+            // Batasi jumlah data servis
+            if (backup.services.length > 5000) {
+
+                throw new Error(
+                    "Jumlah riwayat servis terlalu banyak."
+                );
+            }
+
+
+            const validServices =
+                backup.services.every(item => {
+
+                    if (
+                        !item ||
+                        typeof item !== "object" ||
+                        Array.isArray(item)
+                    ) {
+                        return false;
+                    }
+
+
+                    return (
+                        (
+                            typeof item.id === "number" ||
+                            typeof item.id === "string"
+                        ) &&
+
+                        typeof item.date === "string" &&
+
+                        typeof item.name === "string" &&
+
+                        typeof item.km === "number" &&
+                        Number.isFinite(item.km) &&
+                        item.km >= 0 &&
+
+                        typeof item.part === "string" &&
+
+                        typeof item.workshop === "string" &&
+
+                        typeof item.cost === "number" &&
+                        Number.isFinite(item.cost) &&
+                        item.cost >= 0 &&
+
+                        typeof item.notes === "string"
+                    );
+
+                });
+
+
+            if (!validServices) {
+
+                throw new Error(
+                    "Ada data servis yang tidak valid."
+                );
+            }
+
+
+            // ====================================
+            // VALIDASI TAX
+            // ====================================
+
+            if (
+                !backup.tax ||
+                typeof backup.tax !== "object" ||
+                Array.isArray(backup.tax)
+            ) {
+
+                throw new Error(
+                    "Data pajak tidak valid."
+                );
+            }
+
+
+            if (
+                typeof backup.tax.date !== "string" ||
+
+                typeof backup.tax.cost !== "number" ||
+
+                !Number.isFinite(backup.tax.cost) ||
+
+                backup.tax.cost < 0
+            ) {
+
+                throw new Error(
+                    "Data pajak rusak atau tidak valid."
+                );
+            }
+
+
+            // ====================================
+            // KONFIRMASI RESTORE
+            // ====================================
+
+            const confirmRestore =
+                confirm(
+                    "Restore data ini?\n\n" +
+                    "Data Ingfo Bengkel saat ini akan diganti."
+                );
+
+
+            if (!confirmRestore) {
+
+                event.target.value = "";
+
+                return;
+            }
+
+
+            // ====================================
+            // RESTORE
+            // ====================================
+
+            vehicle =
+                backup.vehicle;
+
+            services =
+                backup.services;
+
+            tax =
+                backup.tax;
+
+
+            saveData();
+
+            render();
+
+
+            alert(
+                "Data berhasil dipulihkan!"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Restore error:",
+                error
+            );
+
+
+            alert(
+                "File backup tidak valid.\n\n" +
+                error.message
+            );
+
+        }
+
+
+        // Reset input
+        event.target.value = "";
+
+    };
+
+
+    // ====================================
+    // ERROR SAAT MEMBACA FILE
+    // ====================================
+
+    reader.onerror = function () {
+
+        alert(
+            "File gagal dibaca."
+        );
+
+        event.target.value = "";
+
+    };
 
 
     reader.readAsText(file);
