@@ -1,0 +1,466 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#111111">
+
+    <title>My Garage</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+    <header class="header">
+        <div class="logo">MY GARAGE</div>
+        <button class="icon-btn" onclick="openVehicle()">⚙️</button>
+    </header>
+
+    <!-- MOTOR -->
+    <section class="vehicle-card">
+
+        <div class="vehicle-label">MY MOTORCYCLE</div>
+
+        <div class="vehicle-name" id="vehicleName">
+            Honda Vario 160
+        </div>
+
+        <div class="vehicle-meta">
+            <span id="vehiclePlate">E 1234 XX</span>
+            •
+            <span id="vehicleYear">2024</span>
+        </div>
+
+        <div class="odometer-wrap">
+
+            <div class="odometer-label">
+                CURRENT ODOMETER
+            </div>
+
+            <div class="odometer-row">
+
+                <div class="odometer">
+                    <span id="odometer">12,450</span>
+                    <span>KM</span>
+                </div>
+
+                <button class="icon-btn" onclick="openOdometer()">
+                    ✏️
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NEXT SERVICE -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>NEXT SERVICE</h2>
+        </div>
+
+        <div class="next-service">
+
+            <div class="service-top">
+
+                <div class="service-icon">🛢️</div>
+
+                <div class="service-info">
+                    <small>ENGINE OIL</small>
+                    <strong id="remainingText">
+                        1,550 km remaining
+                    </strong>
+                </div>
+
+                <div class="remaining" id="servicePercent">
+                    78%
+                </div>
+
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+
+            <div class="progress-meta">
+                <span id="currentKmText">12,450 KM</span>
+                <span id="nextKmText">Next 14,000 KM</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- OVERVIEW -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>OVERVIEW</h2>
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+                <small>TOTAL SERVICE</small>
+                <strong id="totalService">0</strong>
+            </div>
+
+            <div class="summary-card">
+                <small>TOTAL COST</small>
+                <strong id="totalCost">Rp0</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MAINTENANCE -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>MAINTENANCE</h2>
+        </div>
+
+        <div class="maintenance-list">
+
+            <div class="maintenance-item">
+                <div class="emoji">🛢️</div>
+
+                <div class="maintenance-name">
+                    <strong>Engine Oil</strong>
+                    <small>Check periodically</small>
+                </div>
+
+                <span class="status good">GOOD</span>
+            </div>
+
+            <div class="maintenance-item">
+                <div class="emoji">⚙️</div>
+
+                <div class="maintenance-name">
+                    <strong>CVT Service</strong>
+                    <small>Transmission maintenance</small>
+                </div>
+
+                <span class="status good">GOOD</span>
+            </div>
+
+            <div class="maintenance-item">
+                <div class="emoji">💧</div>
+
+                <div class="maintenance-name">
+                    <strong>Gear Oil</strong>
+                    <small>Check next service</small>
+                </div>
+
+                <span class="status soon">SOON</span>
+            </div>
+
+            <div class="maintenance-item">
+                <div class="emoji">🛞</div>
+
+                <div class="maintenance-name">
+                    <strong>Tires</strong>
+                    <small>Check pressure & condition</small>
+                </div>
+
+                <span class="status good">GOOD</span>
+            </div>
+
+            <div class="maintenance-item">
+                <div class="emoji">🛑</div>
+
+                <div class="maintenance-name">
+                    <strong>Brake Pads</strong>
+                    <small>Inspect thickness</small>
+                </div>
+
+                <span class="status soon">CHECK</span>
+            </div>
+
+            <div class="maintenance-item">
+                <div class="emoji">🔋</div>
+
+                <div class="maintenance-name">
+                    <strong>Battery</strong>
+                    <small>Battery condition</small>
+                </div>
+
+                <span class="status good">GOOD</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PAJAK -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>VEHICLE TAX</h2>
+            <button onclick="openTax()">Edit</button>
+        </div>
+
+        <div class="tax-card">
+
+            <div class="tax-icon">📄</div>
+
+            <div class="tax-info">
+                <small>NEXT PAYMENT</small>
+                <strong id="taxDateText">Not set</strong>
+            </div>
+
+            <div class="tax-days" id="taxDays"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- HISTORY -->
+    <section class="section">
+
+        <div class="section-title">
+            <h2>SERVICE HISTORY</h2>
+        </div>
+
+        <div class="history" id="history"></div>
+
+        <button class="add-service" onclick="openService()">
+            ＋ ADD SERVICE
+        </button>
+
+    </section>
+
+</div>
+
+
+<!-- MODAL ADD SERVICE -->
+<div class="modal" id="serviceModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Add Service</h2>
+
+            <button class="close"
+                onclick="closeModal('serviceModal')">
+                ✕
+            </button>
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+                <label>DATE</label>
+                <input type="date" id="serviceDate">
+            </div>
+
+            <div class="form-group">
+                <label>ODOMETER (KM)</label>
+                <input type="number" id="serviceKm">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>SERVICE / MAINTENANCE</label>
+            <input type="text"
+                id="serviceName"
+                placeholder="Ganti oli + servis CVT">
+        </div>
+
+        <div class="form-group">
+            <label>SPARE PART</label>
+            <input type="text"
+                id="servicePart"
+                placeholder="Oli, kampas rem, busi...">
+        </div>
+
+        <div class="form-group">
+            <label>WORKSHOP</label>
+            <input type="text"
+                id="serviceWorkshop"
+                placeholder="Nama bengkel">
+        </div>
+
+        <div class="form-group">
+            <label>TOTAL COST</label>
+            <input type="number"
+                id="serviceCost"
+                placeholder="120000">
+        </div>
+
+        <div class="form-group">
+            <label>NOTES</label>
+            <textarea
+                id="serviceNotes"
+                placeholder="Catatan servis..."></textarea>
+        </div>
+
+        <button class="save-btn" onclick="saveService()">
+            SAVE SERVICE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL MOTOR -->
+<div class="modal" id="vehicleModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Motorcycle</h2>
+
+            <button class="close"
+                onclick="closeModal('vehicleModal')">
+                ✕
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label>MOTORCYCLE NAME</label>
+            <input id="inputVehicleName">
+        </div>
+
+        <div class="form-row">
+
+            <div class="form-group">
+                <label>LICENSE PLATE</label>
+                <input id="inputPlate">
+            </div>
+
+            <div class="form-group">
+                <label>YEAR</label>
+                <input type="number" id="inputYear">
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <label>SERVICE INTERVAL (KM)</label>
+            <input type="number"
+                id="serviceInterval"
+                placeholder="2000">
+        </div>
+
+        <button class="save-btn" onclick="saveVehicle()">
+            SAVE MOTORCYCLE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL ODOMETER -->
+<div class="modal" id="odometerModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Update Odometer</h2>
+
+            <button class="close"
+                onclick="closeModal('odometerModal')">
+                ✕
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label>CURRENT KM</label>
+            <input type="number" id="inputOdometer">
+        </div>
+
+        <button class="save-btn" onclick="saveOdometer()">
+            UPDATE ODOMETER
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- MODAL PAJAK -->
+<div class="modal" id="taxModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2>Vehicle Tax</h2>
+
+            <button class="close"
+                onclick="closeModal('taxModal')">
+                ✕
+            </button>
+        </div>
+
+        <div class="form-group">
+            <label>NEXT TAX PAYMENT</label>
+            <input type="date" id="taxDate">
+        </div>
+
+        <div class="form-group">
+            <label>ESTIMATED COST</label>
+            <input type="number"
+                id="taxCost"
+                placeholder="350000">
+        </div>
+
+        <button class="save-btn" onclick="saveTax()">
+            SAVE TAX
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- NAVIGATION -->
+<nav class="bottom-nav">
+
+    <button class="nav-item active">
+        <span>⌂</span>
+        Home
+    </button>
+
+    <button class="nav-item" onclick="openService()">
+        <span>🔧</span>
+        Service
+    </button>
+
+    <button class="nav-item" onclick="openTax()">
+        <span>📄</span>
+        Tax
+    </button>
+
+    <button class="nav-item" onclick="openVehicle()">
+        <span>⚙</span>
+        Garage
+    </button>
+
+</nav>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
+```
