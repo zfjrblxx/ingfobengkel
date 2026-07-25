@@ -1218,3 +1218,492 @@ function render() {
 // ========================================
 
 render();
+
+// ========================================
+// PRINT SERVICE PREVIEW
+// ========================================
+
+let currentPrintService = null;
+
+
+function printService(id) {
+
+    const item =
+        services.find(
+            service => service.id === id
+        );
+
+
+    if (!item) {
+
+        alert(
+            "Data servis tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    currentPrintService = item;
+
+
+    // ====================================
+    // NEXT SERVICE + 3 BULAN
+    // ====================================
+
+    const serviceDate =
+        new Date(
+            item.date + "T00:00:00"
+        );
+
+
+    const nextDate =
+        new Date(serviceDate);
+
+
+    nextDate.setMonth(
+        nextDate.getMonth() + 3
+    );
+
+
+    const nextServiceText =
+        nextDate.toLocaleDateString(
+            "id-ID",
+            {
+                day: "2-digit",
+                month: "short",
+                year: "numeric"
+            }
+        );
+
+
+    // ====================================
+    // BASIC DATA
+    // ====================================
+
+    document.getElementById(
+        "printDate"
+    ).textContent =
+        formatDate(item.date);
+
+
+    document.getElementById(
+        "printKm"
+    ).textContent =
+        formatNumber(item.km) +
+        " KM";
+
+
+    document.getElementById(
+        "printVehicle"
+    ).textContent =
+        vehicle.name;
+
+
+    document.getElementById(
+        "printServiceName"
+    ).textContent =
+        item.name;
+
+
+    document.getElementById(
+        "printCost"
+    ).textContent =
+        formatRupiah(item.cost);
+
+
+    document.getElementById(
+        "printNextService"
+    ).textContent =
+        nextServiceText;
+
+
+    // ====================================
+    // OPTIONAL DATA
+    // ====================================
+
+    setPrintDetail(
+        "printPartWrap",
+        "printPart",
+        item.part
+    );
+
+
+    setPrintDetail(
+        "printWorkshopWrap",
+        "printWorkshop",
+        item.workshop
+    );
+
+
+    setPrintDetail(
+        "printNotesWrap",
+        "printNotes",
+        item.notes
+    );
+
+
+    // ====================================
+    // FOOTER
+    // ====================================
+
+    document.getElementById(
+        "printFooter"
+    ).textContent =
+        "INGFO BENGKEL · " +
+        formatDate(item.date).toUpperCase();
+
+
+    // ====================================
+    // SHOW
+    // ====================================
+
+    document.getElementById(
+        "printPreview"
+    ).classList.add("show");
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+// ========================================
+// OPTIONAL DETAIL
+// ========================================
+
+function setPrintDetail(
+    wrapperId,
+    valueId,
+    value
+) {
+
+    const wrapper =
+        document.getElementById(
+            wrapperId
+        );
+
+
+    const element =
+        document.getElementById(
+            valueId
+        );
+
+
+    if (!wrapper || !element) {
+        return;
+    }
+
+
+    if (value && value.trim()) {
+
+        wrapper.style.display =
+            "flex";
+
+        element.textContent =
+            value;
+
+    }
+
+    else {
+
+        wrapper.style.display =
+            "none";
+
+    }
+}
+
+
+// ========================================
+// CLOSE PRINT
+// ========================================
+
+function closePrintPreview() {
+
+    document.getElementById(
+        "printPreview"
+    ).classList.remove("show");
+
+
+    document.body.style.overflow =
+        "";
+
+
+    currentPrintService =
+        null;
+}
+
+
+// ========================================
+// PRINT
+// ========================================
+
+function printCurrentService() {
+
+    if (!currentPrintService) {
+        return;
+    }
+
+
+    const receipt =
+        document.getElementById(
+            "serviceReceipt"
+        );
+
+
+    const printWindow =
+        window.open(
+            "",
+            "_blank"
+        );
+
+
+    if (!printWindow) {
+
+        alert(
+            "Izinkan pop-up untuk Print."
+        );
+
+        return;
+    }
+
+
+    printWindow.document.write(`
+        <!DOCTYPE html>
+
+        <html>
+
+        <head>
+
+            <title>
+                Ingfo Bengkel
+            </title>
+
+            <style>
+
+                @page {
+                    size: A5 portrait;
+                    margin: 15mm;
+                }
+
+                body {
+                    margin: 0;
+                    font-family:
+                        "Courier New",
+                        monospace;
+                }
+
+                .service-receipt {
+                    width: 100%;
+                    color: #111;
+                }
+
+                .receipt-content {
+                    padding: 20px;
+                }
+
+                .receipt-header {
+                    text-align: center;
+                    margin-bottom: 30px;
+                }
+
+                .receipt-header h1 {
+                    margin: 0;
+                    font-size: 21px;
+                    letter-spacing: 5px;
+                }
+
+                .receipt-header p {
+                    margin-top: 8px;
+                    font-size: 8px;
+                    letter-spacing: 3px;
+                }
+
+                .receipt-line {
+                    border-top:
+                        1px dashed #888;
+
+                    margin:
+                        22px 0;
+                }
+
+                .receipt-row,
+                .receipt-detail,
+                .receipt-total {
+
+                    display: flex;
+
+                    justify-content:
+                        space-between;
+
+                    gap: 20px;
+
+                    margin-bottom: 10px;
+
+                    font-size: 9px;
+                }
+
+                .receipt-row strong,
+                .receipt-detail strong {
+
+                    text-align: right;
+
+                    max-width: 65%;
+                }
+
+                .receipt-service h2 {
+
+                    font-size: 12px;
+
+                    margin:
+                        0 0 22px;
+
+                    text-transform:
+                        uppercase;
+                }
+
+                .receipt-total strong {
+                    font-size: 12px;
+                }
+
+                .receipt-next {
+                    text-align: center;
+                }
+
+                .receipt-next span {
+                    display: block;
+                    font-size: 8px;
+                    letter-spacing: 2px;
+                }
+
+                .receipt-next strong {
+                    display: block;
+                    margin-top: 8px;
+                    font-size: 13px;
+                }
+
+                .receipt-next small {
+                    display: block;
+                    margin-top: 6px;
+                    font-size: 7px;
+                }
+
+                .receipt-end {
+                    text-align: center;
+                    margin-top: 25px;
+                    font-size: 9px;
+                    font-weight: bold;
+                    letter-spacing: 3px;
+                }
+
+                .receipt-footer {
+                    text-align: center;
+                    margin-top: 14px;
+                    font-size: 7px;
+                }
+
+                .receipt-tear {
+                    display: none;
+                }
+
+            </style>
+
+        </head>
+
+        <body>
+
+            ${receipt.outerHTML}
+
+            <script>
+
+                window.onload =
+                    function() {
+
+                        window.print();
+
+                    };
+
+            <\/script>
+
+        </body>
+
+        </html>
+    `);
+
+
+    printWindow.document.close();
+}
+
+
+// ========================================
+// SAVE IMAGE
+// ========================================
+
+function saveServiceImage() {
+
+    alert(
+        "Fitur Save Image kita pasang berikutnya."
+    );
+}
+
+
+// ========================================
+// SHARE
+// ========================================
+
+function shareService() {
+
+    if (!currentPrintService) {
+        return;
+    }
+
+
+    const text =
+        "INGFO BENGKEL\n" +
+        "RIWAYAT SERVICE\n\n" +
+
+        vehicle.name +
+        "\n" +
+
+        formatDate(
+            currentPrintService.date
+        ) +
+
+        "\n" +
+
+        formatNumber(
+            currentPrintService.km
+        ) +
+
+        " KM\n\n" +
+
+        currentPrintService.name +
+
+        "\n" +
+
+        formatRupiah(
+            currentPrintService.cost
+        );
+
+
+    if (navigator.share) {
+
+        navigator.share({
+            title:
+                "Riwayat Service",
+            text: text
+        });
+
+    }
+
+    else {
+
+        navigator.clipboard
+            .writeText(text);
+
+        alert(
+            "Riwayat servis disalin."
+        );
+
+    }
+}
