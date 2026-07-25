@@ -251,17 +251,21 @@
     </section>
 
 
-<div class="header-actions">
-    <button class="icon-btn" onclick="backupData()" title="Backup Data">
-        ↓
+<div class="data-actions">
+
+    <button class="data-action" onclick="backupData()">
+        <span class="data-icon">↓</span>
+        <span class="data-title">Backup</span>
     </button>
 
-    <button class="icon-btn" onclick="openRestore()" title="Restore Data">
-        ↑
+    <button class="data-action" onclick="openRestore()">
+        <span class="data-icon">↑</span>
+        <span class="data-title">Restore</span>
     </button>
 
-    <button class="icon-btn" onclick="openVehicle()" title="Settings">
-        ⚙️
+    <button class="data-action" onclick="openVehicle()">
+        <span class="data-icon">⚙</span>
+        <span class="data-title">Settings</span>
     </button>
 
     <input
@@ -271,6 +275,8 @@
         onchange="restoreData(event)"
         hidden
     >
+
+</div>
 </div>
     
     
