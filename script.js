@@ -1934,21 +1934,6 @@ if (!isValidTax(backup.tax)) {
 }
 
 
-// ====================================
-// KONFIRMASI RESTORE
-// ====================================
-
-
-           // ====================================
-// VALIDASI TAX
-// ====================================
-
-if (!isValidTax(backup.tax)) {
-
-    throw new Error(
-        "Data pajak rusak atau tidak valid."
-    );
-}
 
 
             // ====================================
