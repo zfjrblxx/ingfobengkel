@@ -2,10 +2,6 @@
 // SAFE LOCAL STORAGE
 // ========================================
 
-// ========================================
-// SAFE LOCAL STORAGE
-// ========================================
-
 function loadStorage(key, fallback, validator) {
 
     try {
@@ -832,27 +828,66 @@ if (!isValidDate(date)) {
 
 
 // ========================================
-// SAVE LOCAL STORAGE
+// SAVE LOCAL STORAGE - SAFE
 // ========================================
 
 function saveData() {
 
-    localStorage.setItem(
-        "garageVehicle",
-        JSON.stringify(vehicle)
-    );
+    try {
+
+        localStorage.setItem(
+            "garageVehicle",
+            JSON.stringify(vehicle)
+        );
+
+        localStorage.setItem(
+            "garageServices",
+            JSON.stringify(services)
+        );
+
+        localStorage.setItem(
+            "garageTax",
+            JSON.stringify(tax)
+        );
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal menyimpan data:",
+            error
+        );
 
 
-    localStorage.setItem(
-        "garageServices",
-        JSON.stringify(services)
-    );
+        // Storage penuh
+        if (
+            error.name === "QuotaExceededError" ||
+            error.name === "NS_ERROR_DOM_QUOTA_REACHED"
+        ) {
+
+            alert(
+                "Penyimpanan browser penuh.\n\n" +
+                "Backup data terlebih dahulu lalu hapus data yang tidak diperlukan."
+            );
+
+        }
+
+        // Error lainnya
+        else {
+
+            alert(
+                "Data gagal disimpan.\n\n" +
+                "Pastikan browser mengizinkan penyimpanan data."
+            );
+
+        }
 
 
-    localStorage.setItem(
-        "garageTax",
-        JSON.stringify(tax)
-    );
+        return false;
+    }
 }
 
 
