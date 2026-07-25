@@ -250,10 +250,11 @@
 
     </section>
 
-<div class="backup-area">
+<!-- BACKUP & RESTORE -->
+<section class="section">
 
-    <div class="backup-title">
-        BACKUP AND RESTORE
+    <div class="section-title">
+        <h2>BACKUP AND RESTORE</h2>
     </div>
 
     <div class="backup-actions">
@@ -270,17 +271,17 @@
             ⚙️
         </button>
 
+        <input
+            type="file"
+            id="restoreFile"
+            accept=".json,application/json"
+            onchange="restoreData(event)"
+            hidden
+        >
+
     </div>
 
-    <input
-        type="file"
-        id="restoreFile"
-        accept=".json,application/json"
-        onchange="restoreData(event)"
-        hidden
-    >
-
-</div>
+</section>
 
 </div>
     
