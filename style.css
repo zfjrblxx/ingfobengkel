@@ -267,65 +267,7 @@ button {
 }
 
 
-/* MAINTENANCE */
 
-.maintenance-list {
-    background: #fff;
-    border-radius: 22px;
-    overflow: hidden;
-}
-
-.maintenance-item {
-    padding: 16px 18px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--line);
-}
-
-.maintenance-item:last-child {
-    border-bottom: 0;
-}
-
-.maintenance-item .emoji {
-    font-size: 20px;
-    width: 35px;
-}
-
-.maintenance-name {
-    flex: 1;
-}
-
-.maintenance-name strong {
-    font-size: 14px;
-    display: block;
-}
-
-.maintenance-name small {
-    color: #999;
-    font-size: 11px;
-}
-
-.status {
-    font-size: 10px;
-    padding: 6px 9px;
-    border-radius: 20px;
-    font-weight: 700;
-}
-
-.good {
-    color: var(--green);
-    background: var(--green-bg);
-}
-
-.soon {
-    color: var(--yellow);
-    background: var(--yellow-bg);
-}
-
-.danger {
-    color: var(--red);
-    background: var(--red-bg);
-}
 
 
 /* TAX */
