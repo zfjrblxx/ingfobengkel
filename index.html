@@ -109,46 +109,38 @@
 
 
 
-<!-- ========================================
-     OIL TRACKER
-======================================== -->
+
+
+
+<! --- ======== OIL TRACKER =========== ---!>
+
 
 <section class="section oil-section">
 
     <div class="section-title">
-
         <h2>OLI MESIN</h2>
 
         <button
             type="button"
+            class="oil-setting-btn"
             onclick="openOilSetting()"
         >
             ATUR
         </button>
-
     </div>
-
 
     <div class="oil-card">
 
         <div class="oil-top">
 
             <div class="oil-km">
-
-                <span>
-                    PEMAKAIAN OLI
-                </span>
+                <span>PEMAKAIAN OLI</span>
 
                 <div>
                     <strong id="oilUsedKm">0</strong>
-
-                    <span>
-                        / 2.500 KM
-                    </span>
+                    <span>/ 2.500 KM</span>
                 </div>
-
             </div>
-
 
             <div
                 class="oil-percent"
@@ -159,21 +151,16 @@
 
         </div>
 
-
         <div class="oil-progress">
-
             <div
                 class="oil-progress-bar"
                 id="oilProgressBar"
             ></div>
-
         </div>
-
 
         <div class="oil-bottom">
 
             <div>
-
                 <span class="oil-bottom-label">
                     STATUS
                 </span>
@@ -181,14 +168,12 @@
                 <strong id="oilStatus">
                     BELUM DIATUR
                 </strong>
-
             </div>
-
 
             <button
                 type="button"
                 class="oil-change-btn"
-                onclick="openOilChange()"
+                onclick="changeOil()"
             >
                 GANTI OLI
             </button>
