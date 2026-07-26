@@ -1189,6 +1189,9 @@ button {
 }
 
 
+
+/* =============== */
+
 .section {
     padding: 0 20px;
     margin-top: 25px;
@@ -1213,4 +1216,242 @@ button {
     font-size: 12px;
 }
 
+/* ========================================
+   OIL TRACKER
+======================================== */
+
+/*
+   Layout section mengikuti .section utama.
+   Tidak perlu margin/padding kiri-kanan tambahan.
+*/
+
+.oil-section {
+    margin-top: 25px;
+}
+
+
+/* ========================================
+   CARD
+======================================== */
+
+.oil-card {
+    width: 100%;
+
+    background: #fff;
+
+    border-radius: 22px;
+
+    padding: 20px;
+}
+
+
+/* ========================================
+   TOP
+======================================== */
+
+.oil-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+/* PEMAKAIAN OLI */
+
+.oil-km {
+    min-width: 0;
+}
+
+
+.oil-km > span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #999;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.oil-km > div {
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 5px;
+}
+
+
+.oil-km strong {
+    font-size: 24px;
+
+    line-height: 1;
+
+    font-weight: 600;
+
+    color: #171717;
+}
+
+
+.oil-km > div > span {
+    font-size: 11px;
+
+    font-weight: 500;
+
+    color: #999;
+}
+
+
+/* PERCENT */
+
+.oil-percent {
+    flex-shrink: 0;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #171717;
+}
+
+
+/* ========================================
+   PROGRESS BAR
+======================================== */
+
+.oil-progress {
+    width: 100%;
+
+    height: 7px;
+
+    margin-top: 18px;
+
+    background: #eee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+.oil-progress-bar {
+    width: 0%;
+
+    height: 100%;
+
+    background: #171717;
+
+    border-radius: 10px;
+
+    transition: width .3s ease;
+}
+
+
+/* ========================================
+   BOTTOM
+======================================== */
+
+.oil-bottom {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 18px;
+}
+
+
+/* STATUS */
+
+.oil-bottom-label {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #999;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+}
+
+
+.oil-bottom strong {
+    display: block;
+
+    color: #333;
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    font-weight: 700;
+}
+
+
+/* ========================================
+   GANTI OLI BUTTON
+======================================== */
+
+.oil-change-btn {
+    flex-shrink: 0;
+
+    border: 0;
+
+    background: #171717;
+
+    color: #fff;
+
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+
+/* ========================================
+   SMALL MOBILE
+======================================== */
+
+@media (max-width: 380px) {
+
+    .oil-card {
+        padding: 17px;
+    }
+
+
+    .oil-km strong {
+        font-size: 22px;
+    }
+
+
+    .oil-km > div > span {
+        font-size: 10px;
+    }
+
+
+    .oil-change-btn {
+        padding: 9px 11px;
+    }
+
+}
 
