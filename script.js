@@ -78,6 +78,20 @@ const defaultTax = {
 
 
 // ========================================
+// DEFAULT OIL TRACKER
+// ========================================
+
+const defaultOil = {
+
+    // KM terakhir saat oli diganti
+    lastKm: null,
+
+    // Default ganti oli setiap 2500 KM
+    interval: 2500
+};
+
+
+// ========================================
 // VALIDASI FUEL LOG
 // ========================================
 
@@ -233,7 +247,6 @@ function isValidServices(data) {
         return false;
     }
 
-    // Batasi jumlah data
     if (data.length > 5000) {
         return false;
     }
@@ -271,6 +284,58 @@ function isValidTax(data) {
 
 
 // ========================================
+// VALIDATOR OIL
+// ========================================
+
+function isValidOil(data) {
+
+    if (
+        !data ||
+        typeof data !== "object" ||
+        Array.isArray(data)
+    ) {
+        return false;
+    }
+
+
+    const validLastKm =
+
+        data.lastKm === null ||
+
+        (
+            typeof data.lastKm === "number" &&
+
+            Number.isFinite(
+                data.lastKm
+            ) &&
+
+            data.lastKm >= 0 &&
+
+            data.lastKm <= 9999999
+        );
+
+
+    const validInterval =
+
+        typeof data.interval === "number" &&
+
+        Number.isFinite(
+            data.interval
+        ) &&
+
+        data.interval >= 1 &&
+
+        data.interval <= 999999;
+
+
+    return (
+        validLastKm &&
+        validInterval
+    );
+}
+
+
+// ========================================
 // LOAD DATA
 // ========================================
 
@@ -296,6 +361,15 @@ let tax =
         { ...defaultTax },
         isValidTax
     );
+
+
+let oil =
+    loadStorage(
+        "garageOil",
+        { ...defaultOil },
+        isValidOil
+    );
+
 
 
 // ========================================
