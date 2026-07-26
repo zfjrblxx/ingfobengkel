@@ -693,34 +693,21 @@
 </nav>
 
 
-<!-- =====================================
+<!-- ========================================
      OIL TRACKER MODAL
-===================================== -->
+======================================== -->
 
-<div
-    class="modal"
-    id="oilModal"
->
+<div class="modal" id="oilModal">
 
     <div class="modal-box">
 
-        <div class="modal-head">
+        <div class="modal-header">
 
-            <div>
-
-                <div class="modal-label">
-                    OIL TRACKER
-                </div>
-
-                <h2>
-                    Atur Oli Mesin
-                </h2>
-
-            </div>
-
+            <h2>Atur Oli Mesin</h2>
 
             <button
-                class="modal-close"
+                type="button"
+                class="close"
                 onclick="closeModal('oilModal')"
             >
                 ×
@@ -731,17 +718,13 @@
 
         <div class="form-group">
 
-            <label for="oilLastKm">
-                KM TERAKHIR GANTI OLI
-            </label>
+            <label>KM TERAKHIR GANTI OLI</label>
 
             <input
                 type="number"
                 id="oilLastKm"
-                inputmode="numeric"
+                placeholder="Contoh: 12000"
                 min="0"
-                max="9999999"
-                placeholder="Contoh: 32000"
             >
 
         </div>
@@ -749,53 +732,29 @@
 
         <div class="form-group">
 
-            <label for="oilIntervalInput">
-                INTERVAL GANTI OLI
-            </label>
+            <label>INTERVAL GANTI OLI (KM)</label>
 
-            <div class="input-unit">
-
-                <input
-                    type="number"
-                    id="oilIntervalInput"
-                    inputmode="numeric"
-                    min="1"
-                    max="999999"
-                    value="2500"
-                >
-
-                <span>
-                    KM
-                </span>
-
-            </div>
+            <input
+                type="number"
+                id="oilIntervalInput"
+                value="2500"
+                min="1"
+            >
 
         </div>
 
 
-        <div class="modal-actions">
-
-            <button
-                class="secondary-btn"
-                onclick="closeModal('oilModal')"
-            >
-                BATAL
-            </button>
-
-
-            <button
-                class="primary-btn"
-                onclick="saveOilSettings()"
-            >
-                SIMPAN
-            </button>
-
-        </div>
+        <button
+            type="button"
+            class="save-btn"
+            onclick="saveOilSettings()"
+        >
+            SIMPAN
+        </button>
 
     </div>
 
 </div>
-
     
 
 <!-- =========================
