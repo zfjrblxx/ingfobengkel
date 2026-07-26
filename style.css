@@ -1191,12 +1191,17 @@ button {
 
 
 
+
 /* ========================================
-   OIL TRACKER - FIX MOBILE
+   OIL TRACKER
 ======================================== */
 
+/*
+Oil section mengikuti sistem .section utama.
+Jangan beri margin kiri/kanan tambahan.
+*/
 .oil-section {
-    margin: 0 40px 48px;
+    margin-top: 25px;
 }
 
 
@@ -1204,56 +1209,51 @@ button {
 
 .oil-section .section-head {
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
+    align-items: center;
 
-    gap: 16px;
-
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 
 .oil-section .section-label {
-    margin: 0 0 8px;
-
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: 3px;
+    letter-spacing: 1.8px;
 
     color: #999;
+
+    margin-bottom: 4px;
 }
 
 
 .oil-section h2 {
-    margin: 0;
-
-    font-size: 24px;
-    line-height: 1.1;
+    font-size: 20px;
     font-weight: 600;
 
-    color: #111;
+    line-height: 1.2;
+
+    margin: 0;
 }
 
 
 /* ATUR */
 
 .oil-setting-btn {
-    flex-shrink: 0;
-
-    padding: 10px 15px;
-
-    border: 1px solid #d5d5d5;
-    border-radius: 10px;
+    border: 1px solid #ddd;
 
     background: transparent;
 
+    color: #666;
+
+    padding: 8px 12px;
+
+    border-radius: 10px;
+
     font-size: 10px;
     font-weight: 700;
+
     letter-spacing: 1px;
-
-    color: #555;
-
-    cursor: pointer;
 }
 
 
@@ -1264,14 +1264,11 @@ button {
 .oil-card {
     width: 100%;
 
-    padding: 22px;
-
     background: #fff;
 
-    border: none;
     border-radius: 22px;
 
-    box-sizing: border-box;
+    padding: 20px;
 }
 
 
@@ -1281,28 +1278,33 @@ button {
 
 .oil-top {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    gap: 20px;
+    gap: 15px;
 }
 
 
 .oil-km > span {
     display: block;
 
-    margin-bottom: 8px;
+    margin-bottom: 7px;
 
-    font-size: 9px;
+    color: #999;
+
+    font-size: 10px;
+
     font-weight: 700;
-    letter-spacing: 2px;
 
-    color: #aaa;
+    letter-spacing: 1.5px;
 }
 
 
 .oil-km > div {
     display: flex;
+
     align-items: baseline;
 
     gap: 5px;
@@ -1310,31 +1312,29 @@ button {
 
 
 .oil-km strong {
-    font-size: 25px;
-    line-height: 1;
+    font-size: 24px;
+
     font-weight: 600;
 
-    color: #111;
+    line-height: 1;
 }
 
 
 .oil-km > div > span {
-    font-size: 11px;
-    font-weight: 500;
-
     color: #999;
+
+    font-size: 11px;
 }
 
 
+/* PERCENT */
+
 .oil-percent {
-    flex-shrink: 0;
-
-    padding: 0;
-
     font-size: 14px;
+
     font-weight: 600;
 
-    color: #111;
+    flex-shrink: 0;
 }
 
 
@@ -1344,27 +1344,29 @@ button {
 
 .oil-progress {
     width: 100%;
-    height: 6px;
 
-    margin-top: 22px;
+    height: 7px;
 
-    overflow: hidden;
-
-    border-radius: 999px;
+    margin-top: 18px;
 
     background: #eee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
 }
 
 
 .oil-progress-bar {
     width: 0%;
+
     height: 100%;
 
-    border-radius: inherit;
+    background: #171717;
 
-    background: #111;
+    border-radius: 10px;
 
-    transition: width 0.3s ease;
+    transition: .3s;
 }
 
 
@@ -1374,25 +1376,29 @@ button {
 
 .oil-bottom {
     display: flex;
-    align-items: flex-end;
+
+    align-items: center;
+
     justify-content: space-between;
 
-    gap: 16px;
+    gap: 15px;
 
-    margin-top: 22px;
+    margin-top: 18px;
 }
 
 
 .oil-bottom-label {
     display: block;
 
-    margin-bottom: 7px;
+    margin-bottom: 5px;
+
+    color: #999;
 
     font-size: 9px;
-    font-weight: 700;
-    letter-spacing: 2px;
 
-    color: #aaa;
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
 }
 
 
@@ -1400,113 +1406,29 @@ button {
     display: block;
 
     font-size: 11px;
-    line-height: 1.3;
-    font-weight: 700;
 
-    color: #333;
+    font-weight: 700;
 }
 
 
-/* GANTI OLI */
+/* ========================================
+   GANTI OLI
+======================================== */
 
 .oil-change-btn {
-    flex-shrink: 0;
-
-    min-height: 38px;
-
-    padding: 0 15px;
-
     border: 0;
-    border-radius: 10px;
 
-    background: #111;
+    background: #171717;
 
     color: #fff;
 
+    padding: 10px 14px;
+
+    border-radius: 10px;
+
     font-size: 9px;
+
     font-weight: 700;
-    letter-spacing: .5px;
 
-    cursor: pointer;
-}
-
-
-/* ========================================
-   MOBILE
-======================================== */
-
-@media (max-width: 600px) {
-
-    .oil-section {
-        margin:
-            0 22px
-            42px;
-    }
-
-
-    .oil-section .section-head {
-        margin-bottom: 16px;
-    }
-
-
-    .oil-section h2 {
-        font-size: 22px;
-    }
-
-
-    .oil-card {
-        padding: 20px;
-
-        border-radius: 20px;
-    }
-
-
-    .oil-km strong {
-        font-size: 23px;
-    }
-
-
-    .oil-progress {
-        margin-top: 20px;
-    }
-
-
-    .oil-bottom {
-        margin-top: 20px;
-    }
-
-}
-
-
-/* ========================================
-   VERY SMALL SCREEN
-======================================== */
-
-@media (max-width: 380px) {
-
-    .oil-section {
-        margin-left: 18px;
-        margin-right: 18px;
-    }
-
-
-    .oil-card {
-        padding: 18px;
-    }
-
-
-    .oil-km strong {
-        font-size: 21px;
-    }
-
-
-    .oil-km > div > span {
-        font-size: 10px;
-    }
-
-
-    .oil-change-btn {
-        padding: 0 12px;
-    }
-
+    flex-shrink: 0;
 }
