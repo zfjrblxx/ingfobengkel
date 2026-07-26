@@ -1339,6 +1339,586 @@ function restoreStorageValue(
         oldValue
     );
 }
+
+
+// ========================================
+// OIL TRACKER
+// INTERVAL DEFAULT: 2500 KM
+// ========================================
+
+
+// ========================================
+// OPEN OIL SETTINGS
+// ========================================
+
+function openOilSettings() {
+
+    const lastKmInput =
+        document.getElementById(
+            "oilLastKm"
+        );
+
+    const intervalInput =
+        document.getElementById(
+            "oilIntervalInput"
+        );
+
+
+    if (lastKmInput) {
+
+        lastKmInput.value =
+            oil.lastKm === null
+                ? ""
+                : oil.lastKm;
+
+    }
+
+
+    if (intervalInput) {
+
+        intervalInput.value =
+            oil.interval || 2500;
+
+    }
+
+
+    showModal(
+        "oilModal"
+    );
+}
+
+
+// ========================================
+// SAVE OIL SETTINGS
+// ========================================
+
+function saveOilSettings() {
+
+    const lastKmElement =
+        document.getElementById(
+            "oilLastKm"
+        );
+
+    const intervalElement =
+        document.getElementById(
+            "oilIntervalInput"
+        );
+
+
+    if (
+        !lastKmElement ||
+        !intervalElement
+    ) {
+
+        alert(
+            "Form Oil Tracker tidak ditemukan."
+        );
+
+        return;
+    }
+
+
+    const lastKmInput =
+        lastKmElement
+            .value
+            .trim();
+
+
+    const intervalInput =
+        intervalElement
+            .value
+            .trim();
+
+
+    // ====================================
+    // WAJIB DIISI
+    // ====================================
+
+    if (lastKmInput === "") {
+
+        alert(
+            "Masukkan KM terakhir ganti oli."
+        );
+
+        return;
+    }
+
+
+    if (intervalInput === "") {
+
+        alert(
+            "Masukkan interval ganti oli."
+        );
+
+        return;
+    }
+
+
+    const lastKm =
+        Number(
+            lastKmInput
+        );
+
+
+    const interval =
+        Number(
+            intervalInput
+        );
+
+
+    // ====================================
+    // VALIDASI KM TERAKHIR
+    // ====================================
+
+    if (
+        !Number.isFinite(lastKm) ||
+        lastKm < 0 ||
+        lastKm > 9999999
+    ) {
+
+        alert(
+            "KM terakhir ganti oli tidak valid."
+        );
+
+        return;
+    }
+
+
+    // KM terakhir ganti oli
+    // tidak boleh melebihi
+    // odometer kendaraan sekarang
+
+    if (
+        lastKm >
+        vehicle.odometer
+    ) {
+
+        alert(
+            "KM terakhir ganti oli tidak boleh lebih besar dari odometer sekarang."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // VALIDASI INTERVAL
+    // ====================================
+
+    if (
+        !Number.isFinite(interval) ||
+        interval < 1 ||
+        interval > 999999
+    ) {
+
+        alert(
+            "Interval ganti oli tidak valid."
+        );
+
+        return;
+    }
+
+
+    // ====================================
+    // BACKUP DATA LAMA
+    // ====================================
+
+    const oldOil =
+        { ...oil };
+
+
+    // ====================================
+    // UPDATE DATA
+    // ====================================
+
+    oil = {
+
+        lastKm:
+            Math.round(
+                lastKm
+            ),
+
+        interval:
+            Math.round(
+                interval
+            )
+
+    };
+
+
+    // ====================================
+    // SIMPAN
+    // ====================================
+
+    if (!saveOilData()) {
+
+        oil =
+            oldOil;
+
+        return;
+    }
+
+
+    // ====================================
+    // BERHASIL
+    // ====================================
+
+    render();
+
+
+    closeModal(
+        "oilModal"
+    );
+}
+
+
+// ========================================
+// GANTI OLI SEKARANG
+// ========================================
+
+function changeOil() {
+
+    const currentKm =
+        Math.round(
+            vehicle.odometer
+        );
+
+
+    const confirmed =
+        confirm(
+            "Tandai ganti oli pada " +
+            formatNumber(currentKm) +
+            " KM?"
+        );
+
+
+    if (!confirmed) {
+        return;
+    }
+
+
+    // ====================================
+    // BACKUP DATA
+    // ====================================
+
+    const oldOil =
+        { ...oil };
+
+
+    // ====================================
+    // SET KM TERAKHIR
+    // ====================================
+
+    oil.lastKm =
+        currentKm;
+
+
+    // Jika interval rusak / kosong,
+    // kembalikan ke default 2500 KM
+
+    if (
+        !Number.isFinite(
+            oil.interval
+        ) ||
+        oil.interval <= 0
+    ) {
+
+        oil.interval =
+            2500;
+
+    }
+
+
+    // ====================================
+    // SIMPAN
+    // ====================================
+
+    if (!saveOilData()) {
+
+        oil =
+            oldOil;
+
+        return;
+    }
+
+
+    // ====================================
+    // UPDATE TAMPILAN
+    // ====================================
+
+    render();
+}
+
+
+// ========================================
+// SAVE OIL STORAGE
+// ========================================
+
+function saveOilData() {
+
+    let oldOilStorage;
+
+
+    try {
+
+        // Backup localStorage lama
+
+        oldOilStorage =
+            localStorage.getItem(
+                "garageOil"
+            );
+
+
+        // Simpan data baru
+
+        localStorage.setItem(
+            "garageOil",
+            JSON.stringify(
+                oil
+            )
+        );
+
+
+        return true;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Gagal menyimpan Oil Tracker:",
+            error
+        );
+
+
+        // ====================================
+        // ROLLBACK
+        // ====================================
+
+        try {
+
+            restoreStorageValue(
+                "garageOil",
+                oldOilStorage
+            );
+
+        }
+
+        catch (rollbackError) {
+
+            console.error(
+                "Rollback Oil Tracker gagal:",
+                rollbackError
+            );
+
+        }
+
+
+        alert(
+            "Data Oil Tracker gagal disimpan."
+        );
+
+
+        return false;
+    }
+}
+
+
+// ========================================
+// RENDER OIL TRACKER
+// ========================================
+
+function renderOil() {
+
+    const usedElement =
+        document.getElementById(
+            "oilUsed"
+        );
+
+    const intervalElement =
+        document.getElementById(
+            "oilInterval"
+        );
+
+    const percentElement =
+        document.getElementById(
+            "oilPercent"
+        );
+
+    const progressElement =
+        document.getElementById(
+            "oilProgressBar"
+        );
+
+    const statusElement =
+        document.getElementById(
+            "oilStatus"
+        );
+
+
+    // Jika HTML Oil Tracker
+    // belum ada, jangan error
+
+    if (
+        !usedElement ||
+        !intervalElement ||
+        !percentElement ||
+        !progressElement ||
+        !statusElement
+    ) {
+
+        return;
+    }
+
+
+    // ====================================
+    // INTERVAL
+    // ====================================
+
+    const interval =
+        Number.isFinite(
+            oil.interval
+        ) &&
+        oil.interval > 0
+
+            ? oil.interval
+
+            : 2500;
+
+
+    intervalElement.textContent =
+        formatNumber(
+            interval
+        );
+
+
+    // ====================================
+    // BELUM PERNAH DIATUR
+    // ====================================
+
+    if (oil.lastKm === null) {
+
+        usedElement.textContent =
+            "0";
+
+
+        percentElement.textContent =
+            "0%";
+
+
+        progressElement.style.width =
+            "0%";
+
+
+        statusElement.textContent =
+            "BELUM DIATUR";
+
+
+        return;
+    }
+
+
+    // ====================================
+    // KM YANG SUDAH DIPAKAI
+    // ====================================
+
+    const used =
+        Math.max(
+            0,
+            vehicle.odometer -
+            oil.lastKm
+        );
+
+
+    // ====================================
+    // SISA KM
+    // ====================================
+
+    const remaining =
+        interval -
+        used;
+
+
+    // ====================================
+    // PERSENTASE
+    // ====================================
+
+    const rawPercent =
+        Math.round(
+            (
+                used /
+                interval
+            ) * 100
+        );
+
+
+    const displayPercent =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                rawPercent
+            )
+        );
+
+
+    // ====================================
+    // UPDATE TAMPILAN
+    // ====================================
+
+    usedElement.textContent =
+        formatNumber(
+            used
+        );
+
+
+    percentElement.textContent =
+        displayPercent +
+        "%";
+
+
+    progressElement.style.width =
+        displayPercent +
+        "%";
+
+
+    // ====================================
+    // STATUS
+    // ====================================
+
+    if (remaining > 0) {
+
+        statusElement.textContent =
+            formatNumber(
+                remaining
+            ) +
+            " KM LAGI";
+
+    }
+
+    else if (remaining === 0) {
+
+        statusElement.textContent =
+            "GANTI OLI SEKARANG";
+
+    }
+
+    else {
+
+        statusElement.textContent =
+            "LEWAT " +
+            formatNumber(
+                Math.abs(
+                    remaining
+                )
+            ) +
+            " KM";
+
+    }
+}
+
+
+
 // ========================================
 // NEXT SERVICE
 // PATOKAN: 3 BULAN
@@ -3137,7 +3717,7 @@ function backupData() {
 
     const backup = {
 
-        version: 2,
+        version: 3,
 
         createdAt:
             new Date().toISOString(),
@@ -3152,7 +3732,10 @@ function backupData() {
             tax,
 
         fuelLogs:
-            fuelLogs
+            fuelLogs,
+
+        oil:
+            oil
 
     };
 
@@ -3220,6 +3803,7 @@ function backupData() {
 }
 
 
+
 // ========================================
 // OPEN RESTORE
 // ========================================
@@ -3238,6 +3822,7 @@ function openRestore() {
 
     }
 }
+
 
 
 // ========================================
@@ -3388,20 +3973,13 @@ function restoreData(event) {
 
 
                 // ====================================
-                // VALIDASI FUEL LOG
+                // FUEL LOG
+                // BACKUP LAMA TETAP DIDUKUNG
                 // ====================================
 
                 let restoredFuelLogs =
                     [];
 
-
-                /*
-                    Backup versi lama belum
-                    mempunyai fuelLogs.
-
-                    Jadi backup lama tetap
-                    bisa direstore.
-                */
 
                 if (
                     backup.fuelLogs !==
@@ -3423,6 +4001,46 @@ function restoreData(event) {
 
                     restoredFuelLogs =
                         backup.fuelLogs;
+
+                }
+
+
+                // ====================================
+                // OIL TRACKER
+                // BACKUP LAMA TETAP DIDUKUNG
+                // ====================================
+
+                let restoredOil =
+                    { ...defaultOil };
+
+
+                if (
+                    backup.oil !==
+                    undefined
+                ) {
+
+                    if (
+                        !isValidOil(
+                            backup.oil
+                        )
+                    ) {
+
+                        throw new Error(
+                            "Data Oil Tracker rusak atau tidak valid."
+                        );
+
+                    }
+
+
+                    restoredOil = {
+
+                        lastKm:
+                            backup.oil.lastKm,
+
+                        interval:
+                            backup.oil.interval
+
+                    };
 
                 }
 
@@ -3453,25 +4071,48 @@ function restoreData(event) {
                 // ====================================
 
                 const oldVehicle =
-                    vehicle;
+                    { ...vehicle };
 
                 const oldServices =
-                    services;
+                    [...services];
 
                 const oldTax =
-                    tax;
+                    { ...tax };
 
                 const oldFuelLogs =
-                    fuelLogs;
+                    [...fuelLogs];
+
+                const oldOil =
+                    { ...oil };
 
 
                 // ====================================
                 // BACKUP LOCAL STORAGE LAMA
                 // ====================================
 
+                const oldStorageVehicle =
+                    localStorage.getItem(
+                        "garageVehicle"
+                    );
+
+                const oldStorageServices =
+                    localStorage.getItem(
+                        "garageServices"
+                    );
+
+                const oldStorageTax =
+                    localStorage.getItem(
+                        "garageTax"
+                    );
+
                 const oldStorageFuel =
                     localStorage.getItem(
                         "garageFuelLogs"
+                    );
+
+                const oldStorageOil =
+                    localStorage.getItem(
+                        "garageOil"
                     );
 
 
@@ -3480,23 +4121,30 @@ function restoreData(event) {
                 // ====================================
 
                 vehicle =
-                    backup.vehicle;
+                    { ...backup.vehicle };
 
                 services =
-                    backup.services;
+                    [...backup.services];
 
                 tax =
-                    backup.tax;
+                    { ...backup.tax };
 
                 fuelLogs =
-                    restoredFuelLogs;
+                    [...restoredFuelLogs];
+
+                oil =
+                    { ...restoredOil };
 
 
                 // ====================================
-                // SIMPAN DATA UTAMA
+                // SIMPAN SEMUA DATA
                 // ====================================
 
-                if (!saveData()) {
+                const mainSaved =
+                    saveData();
+
+
+                if (!mainSaved) {
 
                     vehicle =
                         oldVehicle;
@@ -3509,18 +4157,45 @@ function restoreData(event) {
 
                     fuelLogs =
                         oldFuelLogs;
+
+                    oil =
+                        oldOil;
+
+
+                    return;
+                }
+
+
+                const fuelSaved =
+                    saveFuelData();
+
+
+                if (!fuelSaved) {
+
+                    rollbackRestore();
+
+                    return;
+                }
+
+
+                const oilSaved =
+                    saveOilData();
+
+
+                if (!oilSaved) {
+
+                    rollbackRestore();
 
                     return;
                 }
 
 
                 // ====================================
-                // SIMPAN FUEL LOG
+                // ROLLBACK HELPER
                 // ====================================
 
-                if (!saveFuelData()) {
+                function rollbackRestore() {
 
-                    // Kembalikan memory
                     vehicle =
                         oldVehicle;
 
@@ -3533,38 +4208,50 @@ function restoreData(event) {
                     fuelLogs =
                         oldFuelLogs;
 
+                    oil =
+                        oldOil;
 
-                    // Kembalikan Fuel Storage
+
                     try {
+
+                        restoreStorageValue(
+                            "garageVehicle",
+                            oldStorageVehicle
+                        );
+
+                        restoreStorageValue(
+                            "garageServices",
+                            oldStorageServices
+                        );
+
+                        restoreStorageValue(
+                            "garageTax",
+                            oldStorageTax
+                        );
 
                         restoreStorageValue(
                             "garageFuelLogs",
                             oldStorageFuel
                         );
 
+                        restoreStorageValue(
+                            "garageOil",
+                            oldStorageOil
+                        );
+
                     }
 
-                    catch (
-                        rollbackError
-                    ) {
+                    catch (rollbackError) {
 
                         console.error(
-                            "Rollback Fuel Log restore gagal:",
+                            "Rollback restore gagal:",
                             rollbackError
                         );
 
                     }
 
 
-                    /*
-                        Kembalikan data utama
-                        ke kondisi sebelum restore.
-                    */
-
-                    saveData();
-
-
-                    return;
+                    render();
                 }
 
 
@@ -3597,7 +4284,10 @@ function restoreData(event) {
             }
 
 
-            // Reset input
+            // ====================================
+            // RESET FILE INPUT
+            // ====================================
+
             event.target.value =
                 "";
 
@@ -3605,7 +4295,7 @@ function restoreData(event) {
 
 
     // ====================================
-    // ERROR SAAT MEMBACA FILE
+    // ERROR MEMBACA FILE
     // ====================================
 
     reader.onerror =
@@ -3614,6 +4304,7 @@ function restoreData(event) {
             alert(
                 "File gagal dibaca."
             );
+
 
             event.target.value =
                 "";
@@ -3718,6 +4409,13 @@ function render() {
 
 
     // ====================================
+    // OIL TRACKER
+    // ====================================
+
+    renderOil();
+
+
+    // ====================================
     // SERVICE HISTORY
     // ====================================
 
@@ -3737,6 +4435,7 @@ function render() {
 
     renderTax();
 }
+
 
 
 // ========================================
