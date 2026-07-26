@@ -968,8 +968,9 @@ button {
 
 }
 
+
 /* ========================================
-   FUEL LOG
+   FUEL LOG - COMPACT
 ======================================== */
 
 .fuel-history {
@@ -983,65 +984,98 @@ button {
 
 .fuel-log-card {
     background: #ffffff;
+
     border-radius: 20px;
-    padding: 20px;
+
+    padding: 18px 20px;
 }
 
 
-/* TANGGAL */
+/* ========================================
+   TOP
+======================================== */
+
+.fuel-compact-top {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
 
 .fuel-log-date {
-    font-size: 10px;
+    margin: 0;
+
+    font-size: 11px;
+
     color: #999;
-    letter-spacing: 0.8px;
-    margin-bottom: 5px;
+
+    letter-spacing: 0.5px;
 }
 
-
-/* JENIS BBM */
 
 .fuel-log-type {
-    font-size: 18px;
+    font-size: 13px;
+
     font-weight: 600;
+
     color: #111;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
 }
 
 
-/* DETAIL */
+/* ========================================
+   DETAIL
+======================================== */
 
-.fuel-log-detail {
-    margin-top: 10px;
+.fuel-compact-detail {
+    display: flex;
 
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px 15px;
-}
+    align-items: center;
 
-.fuel-log-detail div {
-    font-size: 11px;
-    color: #777;
-}
+    flex-wrap: wrap;
 
-.fuel-log-detail strong {
-    display: block;
+    gap: 7px;
 
-    margin-top: 2px;
+    margin-top: 13px;
 
-    font-size: 14px;
-    font-weight: 600;
-    color: #111;
+    font-size: 12px;
+
+    font-weight: 500;
+
+    color: #555;
 }
 
 
-/* BAGIAN BAWAH */
+.fuel-dot {
+    color: #bbb;
+
+    font-size: 10px;
+}
+
+
+/* ========================================
+   BOTTOM
+======================================== */
 
 .fuel-log-bottom {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
-    margin-top: 16px;
-    padding-top: 14px;
+    gap: 15px;
+
+    margin-top: 14px;
+
+    padding-top: 13px;
 
     border-top: 1px solid #eee;
 }
@@ -1051,8 +1085,44 @@ button {
 
 .fuel-log-cost {
     font-size: 17px;
+
     font-weight: 600;
+
     color: #111;
+}
+
+
+/* ========================================
+   ACTIONS
+======================================== */
+
+.fuel-log-bottom .history-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+/* PRINT */
+
+.fuel-log-bottom .print-btn {
+    border: none;
+
+    border-radius: 10px;
+
+    background: #f3f3f3;
+
+    padding: 8px 11px;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    color: #555;
+
+    cursor: pointer;
 }
 
 
@@ -1060,22 +1130,44 @@ button {
 
 .fuel-delete-btn {
     border: none;
-    background: none;
-    padding: 0;
 
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.7px;
+    background: transparent;
+
+    padding: 8px 4px;
+
+    font-family: inherit;
+
+    font-size: 9px;
 
     color: #999;
 
     cursor: pointer;
 }
 
-.fuel-delete-btn:hover {
-    color: #111;
-}
 
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .fuel-log-card {
+        padding: 16px 18px;
+    }
+
+
+    .fuel-compact-detail {
+        gap: 6px;
+
+        font-size: 11px;
+    }
+
+
+    .fuel-log-cost {
+        font-size: 16px;
+    }
+
+}
 
 /* SELECT DI MODAL */
 
