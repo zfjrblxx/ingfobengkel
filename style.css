@@ -1189,6 +1189,28 @@ button {
 }
 
 
+.section {
+    padding: 0 20px;
+    margin-top: 25px;
+}
 
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-title h2 {
+    font-size: 12px;
+    letter-spacing: 1.4px;
+}
+
+.section-title button {
+    border: 0;
+    background: transparent;
+    color: #777;
+    font-size: 12px;
+}
 
 
