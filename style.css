@@ -1187,3 +1187,249 @@ button {
 
     outline: none;
 }
+
+
+/* ========================================
+   OIL TRACKER
+======================================== */
+
+.oil-section {
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
+
+/* ========================================
+   HEADER
+======================================== */
+
+.oil-section .section-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+
+.oil-section .section-label {
+    margin-bottom: 5px;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 2px;
+
+    color: #999;
+}
+
+
+.oil-section h2 {
+    margin: 0;
+
+    font-size: 18px;
+    font-weight: 600;
+
+    color: #111;
+}
+
+
+/* ========================================
+   GANTI OLI BUTTON
+======================================== */
+
+.oil-change-btn {
+    border: none;
+
+    border-radius: 10px;
+
+    padding: 9px 13px;
+
+    background: #111;
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    cursor: pointer;
+}
+
+
+.oil-change-btn:active {
+    transform: scale(0.97);
+}
+
+
+/* ========================================
+   CARD
+======================================== */
+
+.oil-card {
+    padding: 20px;
+
+    background: #fff;
+
+    border-radius: 20px;
+}
+
+
+/* ========================================
+   TOP
+======================================== */
+
+.oil-top {
+    display: flex;
+
+    align-items: baseline;
+
+    justify-content: space-between;
+
+    gap: 15px;
+}
+
+
+.oil-used {
+    font-size: 24px;
+
+    font-weight: 600;
+
+    color: #111;
+}
+
+
+.oil-limit {
+    margin-left: 3px;
+
+    font-size: 11px;
+
+    color: #999;
+}
+
+
+.oil-percent {
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #111;
+}
+
+
+/* ========================================
+   PROGRESS
+======================================== */
+
+.oil-progress {
+    width: 100%;
+    height: 7px;
+
+    margin-top: 16px;
+
+    overflow: hidden;
+
+    border-radius: 999px;
+
+    background: #eee;
+}
+
+
+.oil-progress-bar {
+    width: 0%;
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #111;
+
+    transition: width 0.35s ease;
+}
+
+
+/* ========================================
+   BOTTOM
+======================================== */
+
+.oil-bottom {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    margin-top: 14px;
+}
+
+
+.oil-status {
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    color: #777;
+}
+
+
+/* ========================================
+   SETTINGS BUTTON
+======================================== */
+
+.oil-settings-btn {
+    border: none;
+
+    background: transparent;
+
+    padding: 5px 0;
+
+    font-family: inherit;
+
+    font-size: 9px;
+
+    color: #999;
+
+    cursor: pointer;
+}
+
+
+.oil-settings-btn:hover {
+    color: #111;
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 480px) {
+
+    .oil-section {
+        margin-top: 28px;
+        margin-bottom: 28px;
+    }
+
+
+    .oil-card {
+        padding: 18px;
+    }
+
+
+    .oil-used {
+        font-size: 22px;
+    }
+
+
+    .oil-change-btn {
+        padding: 8px 11px;
+
+        font-size: 8px;
+    }
+
+}
