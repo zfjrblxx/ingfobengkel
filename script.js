@@ -2321,120 +2321,7 @@ function escapeHTML(value) {
 }
 
 
-// ========================================
-// RENDER FUEL HISTORY
-// ========================================
 
-function renderFuelHistory() {
-
-    const container =
-        document.getElementById(
-            "fuelHistory"
-        );
-
-
-    if (!container) return;
-
-
-    // Belum ada Fuel Log
-    if (!fuelLogs.length) {
-
-        container.innerHTML = `
-            <div class="empty">
-                Belum ada catatan bensin.<br>
-                Catat pengisian pertamamu.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    // Urutkan terbaru
-    const sorted =
-        [...fuelLogs].sort(
-            (a, b) =>
-                new Date(
-                    b.date + "T00:00:00"
-                ) -
-                new Date(
-                    a.date + "T00:00:00"
-                )
-        );
-
-
-    container.innerHTML =
-        sorted
-            .map(item => {
-
-                const pricePerLiter =
-                    item.liter > 0
-                        ? item.cost / item.liter
-                        : 0;
-
-
-                return `
-
-                    <div class="fuel-log-card">
-
-                        <div class="fuel-log-date">
-                            ${formatDate(item.date)}
-                        </div>
-
-
-                        <div class="fuel-log-type">
-                            ${escapeHTML(item.type)}
-                        </div>
-
-
-                        <div class="fuel-log-detail">
-
-                            <div>
-                                ODOMETER
-
-                                <strong>
-                                    ${formatNumber(item.km)} KM
-                                </strong>
-                            </div>
-
-
-                            <div>
-                                LITER
-
-                                <strong>
-                                    ${item.liter.toFixed(2)} L
-                                </strong>
-                            </div>
-
-
-                            <div>
-                                HARGA / LITER
-
-                                <strong>
-                                    ${formatRupiah(
-                                        Math.round(pricePerLiter)
-                                    )}
-                                </strong>
-                            </div>
-
-                        </div>
-
-
-                        <div class="fuel-log-bottom">
-
-                            <div class="fuel-log-cost">
-                                ${formatRupiah(item.cost)}
-                            </div>
-
-
-                            <div class="history-actions">
-
-                                <button
-                                    class="print-btn"
-                                    onclick="printFuel(${item.id})"
-                                >
-                                    PRINT
-                                </button>
 // ========================================
 // RENDER FUEL HISTORY - COMPACT
 // ========================================
@@ -2501,15 +2388,11 @@ function renderFuelHistory() {
 
                     <div class="fuel-log-card">
 
-
-                        <!-- TOP -->
-
                         <div class="fuel-compact-top">
 
                             <div class="fuel-log-date">
                                 ${formatDate(item.date)}
                             </div>
-
 
                             <div class="fuel-log-type">
                                 ${escapeHTML(item.type)}
@@ -2518,29 +2401,23 @@ function renderFuelHistory() {
                         </div>
 
 
-                        <!-- DETAIL -->
-
                         <div class="fuel-compact-detail">
 
                             <span>
                                 ${formatNumber(item.km)} KM
                             </span>
 
-
                             <span class="fuel-dot">
                                 •
                             </span>
-
 
                             <span>
                                 ${item.liter.toFixed(2)} L
                             </span>
 
-
                             <span class="fuel-dot">
                                 •
                             </span>
-
 
                             <span>
                                 ${formatRupiah(
@@ -2552,8 +2429,6 @@ function renderFuelHistory() {
 
                         </div>
 
-
-                        <!-- BOTTOM -->
 
                         <div class="fuel-log-bottom">
 
@@ -2571,7 +2446,6 @@ function renderFuelHistory() {
                                     PRINT
                                 </button>
 
-
                                 <button
                                     class="fuel-delete-btn"
                                     onclick="deleteFuel(${item.id})"
@@ -2583,7 +2457,6 @@ function renderFuelHistory() {
 
                         </div>
 
-
                     </div>
 
                 `;
@@ -2591,6 +2464,9 @@ function renderFuelHistory() {
             })
             .join("");
 }
+
+
+
 
 // ========================================
 // DELETE FUEL
