@@ -108,28 +108,30 @@
 </section>
 
 
-
-<!-- =====================================
+<!-- ========================================
      OIL TRACKER
-===================================== -->
+======================================== -->
 
 <section class="section oil-section">
 
-    <div class="section-head">
+    <!-- HEADER -->
+    <div class="oil-header">
 
-      
-            <div class="section-title">
-        <h2>OIL TRACKER</h2>
-    </div>
-           
-<div class="section-label">
-                Oli Mesin
+        <div>
+            <div class="oil-label">
+                OIL TRACKER
             </div>
+
+            <h2 class="oil-title">
+                Oli Mesin
+            </h2>
         </div>
 
+
         <button
+            type="button"
             class="oil-setting-btn"
-            onclick="openOilSettings()"
+            onclick="openOilSetting()"
         >
             ATUR
         </button>
@@ -137,32 +139,26 @@
     </div>
 
 
+    <!-- OIL CARD -->
     <div class="oil-card">
 
-        <!-- =============================
-             TOP
-        ============================== -->
-
+        <!-- TOP -->
         <div class="oil-top">
 
             <div class="oil-km">
 
-                <span>
+                <span class="oil-card-label">
                     PEMAKAIAN OLI
                 </span>
 
-                <div>
+                <div class="oil-km-value">
 
-                    <strong id="oilUsed">
+                    <strong id="oilUsedKm">
                         0
                     </strong>
 
                     <span>
-                        /
-                        <span id="oilInterval">
-                            2.500
-                        </span>
-                        KM
+                        / 2.500 KM
                     </span>
 
                 </div>
@@ -180,10 +176,7 @@
         </div>
 
 
-        <!-- =============================
-             PROGRESS
-        ============================== -->
-
+        <!-- PROGRESS -->
         <div class="oil-progress">
 
             <div
@@ -194,13 +187,10 @@
         </div>
 
 
-        <!-- =============================
-             BOTTOM
-        ============================== -->
-
+        <!-- BOTTOM -->
         <div class="oil-bottom">
 
-            <div>
+            <div class="oil-status-wrap">
 
                 <span class="oil-bottom-label">
                     STATUS
@@ -214,8 +204,9 @@
 
 
             <button
+                type="button"
                 class="oil-change-btn"
-                onclick="changeOil()"
+                onclick="openOilChange()"
             >
                 GANTI OLI
             </button>
