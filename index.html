@@ -108,6 +108,205 @@
 </section>
 
 
+<!-- =========================
+     OIL TRACKER
+========================= -->
+
+<section class="oil-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <div class="section-label">
+                MAINTENANCE
+            </div>
+
+            <h2>
+                OLI MESIN
+            </h2>
+
+        </div>
+
+
+        <button
+            class="oil-change-btn"
+            onclick="changeOil()"
+        >
+            GANTI OLI
+        </button>
+
+    </div>
+
+
+    <div class="oil-card">
+
+        <!-- KM + PERCENT -->
+
+        <div class="oil-top">
+
+            <div>
+
+                <span
+                    class="oil-used"
+                    id="oilUsed"
+                >
+                    0
+                </span>
+
+                <span class="oil-limit">
+                    /
+                    <span id="oilInterval">
+                        2500
+                    </span>
+                    KM
+                </span>
+
+            </div>
+
+
+            <strong
+                class="oil-percent"
+                id="oilPercent"
+            >
+                0%
+            </strong>
+
+        </div>
+
+
+        <!-- PROGRESS BAR -->
+
+        <div class="oil-progress">
+
+            <div
+                class="oil-progress-bar"
+                id="oilProgressBar"
+            ></div>
+
+        </div>
+
+
+        <!-- STATUS -->
+
+        <div class="oil-bottom">
+
+            <span
+                class="oil-status"
+                id="oilStatus"
+            >
+                BELUM DIATUR
+            </span>
+
+
+            <button
+                class="oil-settings-btn"
+                onclick="openOilSettings()"
+            >
+                ATUR
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     OIL SETTINGS MODAL
+========================= -->
+
+<div
+    class="modal"
+    id="oilModal"
+>
+
+    <div class="modal-box">
+
+        <!-- HEADER -->
+
+        <div class="modal-header">
+
+            <h3>
+                OLI MESIN
+            </h3>
+
+
+            <button
+                class="modal-close"
+                onclick="closeModal('oilModal')"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <!-- KM TERAKHIR GANTI -->
+
+        <div class="form-group">
+
+            <label>
+                KM TERAKHIR GANTI OLI
+            </label>
+
+            <input
+                type="number"
+                id="oilLastKm"
+                min="0"
+                max="9999999"
+                step="1"
+                inputmode="numeric"
+                placeholder="32000"
+            >
+
+        </div>
+
+
+        <!-- INTERVAL -->
+
+        <div class="form-group">
+
+            <label>
+                INTERVAL GANTI OLI
+            </label>
+
+            <input
+                type="number"
+                id="oilIntervalInput"
+                min="1"
+                max="999999"
+                step="1"
+                inputmode="numeric"
+                placeholder="2500"
+            >
+
+        </div>
+
+
+        <!-- SAVE -->
+
+        <button
+            class="save-btn"
+            onclick="saveOilSettings()"
+        >
+            SAVE
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     OVERVIEW
+========================= -->
+
+
+
+    
+
     <!-- OVERVIEW -->
     <section class="section">
 
