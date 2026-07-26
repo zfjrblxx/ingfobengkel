@@ -2435,6 +2435,141 @@ function renderFuelHistory() {
                                 >
                                     PRINT
                                 </button>
+// ========================================
+// RENDER FUEL HISTORY - COMPACT
+// ========================================
+
+function renderFuelHistory() {
+
+    const container =
+        document.getElementById(
+            "fuelHistory"
+        );
+
+
+    if (!container) return;
+
+
+    // ====================================
+    // BELUM ADA FUEL LOG
+    // ====================================
+
+    if (!fuelLogs.length) {
+
+        container.innerHTML = `
+            <div class="empty">
+                Belum ada catatan bensin.<br>
+                Catat pengisian pertamamu.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    // ====================================
+    // URUTKAN TERBARU
+    // ====================================
+
+    const sorted =
+        [...fuelLogs].sort(
+            (a, b) =>
+                new Date(
+                    b.date + "T00:00:00"
+                ) -
+                new Date(
+                    a.date + "T00:00:00"
+                )
+        );
+
+
+    // ====================================
+    // RENDER
+    // ====================================
+
+    container.innerHTML =
+        sorted
+            .map(item => {
+
+                const pricePerLiter =
+                    item.liter > 0
+                        ? item.cost / item.liter
+                        : 0;
+
+
+                return `
+
+                    <div class="fuel-log-card">
+
+
+                        <!-- TOP -->
+
+                        <div class="fuel-compact-top">
+
+                            <div class="fuel-log-date">
+                                ${formatDate(item.date)}
+                            </div>
+
+
+                            <div class="fuel-log-type">
+                                ${escapeHTML(item.type)}
+                            </div>
+
+                        </div>
+
+
+                        <!-- DETAIL -->
+
+                        <div class="fuel-compact-detail">
+
+                            <span>
+                                ${formatNumber(item.km)} KM
+                            </span>
+
+
+                            <span class="fuel-dot">
+                                •
+                            </span>
+
+
+                            <span>
+                                ${item.liter.toFixed(2)} L
+                            </span>
+
+
+                            <span class="fuel-dot">
+                                •
+                            </span>
+
+
+                            <span>
+                                ${formatRupiah(
+                                    Math.round(
+                                        pricePerLiter
+                                    )
+                                )}/L
+                            </span>
+
+                        </div>
+
+
+                        <!-- BOTTOM -->
+
+                        <div class="fuel-log-bottom">
+
+                            <div class="fuel-log-cost">
+                                ${formatRupiah(item.cost)}
+                            </div>
+
+
+                            <div class="history-actions">
+
+                                <button
+                                    class="print-btn"
+                                    onclick="printFuel(${item.id})"
+                                >
+                                    PRINT
+                                </button>
 
 
                                 <button
@@ -2448,6 +2583,7 @@ function renderFuelHistory() {
 
                         </div>
 
+
                     </div>
 
                 `;
@@ -2455,7 +2591,6 @@ function renderFuelHistory() {
             })
             .join("");
 }
-
 
 // ========================================
 // DELETE FUEL
